@@ -24,7 +24,6 @@ class App extends Component {
 
     // On successful login
     fc.on('authenticated', response => {
-      console.log('successful login', response.accessToken)
       this.setState({ token: response.accessToken })
     })
   }
