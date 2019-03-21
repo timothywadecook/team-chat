@@ -1,29 +1,36 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import Login from './components/pages/Login';
-import Home from './components/pages/Home';
-import Register from './components/pages/Register';
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import Index from './components/pages/Index';
+import Login from './components/pages/Login';
+import Register from './components/pages/Register';
+import Home from './components/pages/Home';
+import ProtectedRoute from './components/ProtectedRoute';
+import { fc } from './feathersClient';
+
 import './App.css';
 
 class App extends Component {
+  state = {
+    login: false
+  }
+
+  componentDidMount() {
+    // On successfull login
+    fc.on('authenticated', login => {
+      console.log('successful login', login)
+      this.setState({ login: true })
+    })
+  }
+
   render() {
-    return (
+    return(
       <Router>
-        <nav>
-          <ul>
-            <li><Link to="/">Index</Link></li>
-            <li><Link to="/login">Login</Link></li>
-            <li><Link to="/register">Register</Link></li>
-            <li><Link to="/home">Home</Link></li>
-          </ul>
-        </nav>
         <Route path="/" exact component={Index} />
         <Route path="/login" exact component={Login} />
         <Route path="/register" exact component={Register} />
-        <Route path="/home" exact component={Home} />
+        <ProtectedRoute path="/home" exact login={this.state.login} component={Home} />
       </Router>
-    );
+    )
   }
 }
 
