@@ -15,6 +15,13 @@ class App extends Component {
   }
 
   componentDidMount() {
+    /**
+     * Check localStorage for a jwt token and attempt to authenticate the
+     * token. If the token fails to pass authentication, then don't
+     * do anything (fail silently).
+     */
+    fc.authenticate().catch(() => {});
+
     // On successful login
     fc.on('authenticated', response => {
       console.log('successful login', response.accessToken)
