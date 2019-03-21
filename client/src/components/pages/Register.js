@@ -1,4 +1,5 @@
 import React from 'react';
+import { userService } from '../feathersClient';
 
 class Register extends React.Component {
   state = {
@@ -14,7 +15,16 @@ class Register extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    console.log('trying to submit...')
+
+    userService.create({
+      name: this.state.name,
+      email: this.state.email,
+      password: this.state.password,
+    }).then(res => {
+      console.log(res)
+    }).catch(err => {
+      console.error(err)
+    });
   }
 
   render() {
