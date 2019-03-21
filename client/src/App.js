@@ -4,6 +4,7 @@ import Index from './components/pages/Index';
 import Login from './components/pages/Login';
 import Register from './components/pages/Register';
 import Home from './components/pages/Home';
+import NoTeam from './components/pages/NoTeam';
 import ProtectedRoute from './components/ProtectedRoute';
 import { fc } from './feathersClient';
 
@@ -11,7 +12,8 @@ import './App.css';
 
 class App extends Component {
   state = {
-    token: false
+    token: false,
+    activeTeamId: "the best team"
   }
 
   componentDidMount() {
@@ -34,7 +36,8 @@ class App extends Component {
         <Route path="/" exact component={Index} />
         <Route path="/login" exact render={props => <Login token={this.state.token} {...props} />} />
         <Route path="/register" exact render={props => <Register token={this.state.token} {...props} />} />
-        <ProtectedRoute path="/home" exact token={this.state.token} component={Home} />
+        <ProtectedRoute path="/home" exact token={this.state.token} activeTeamId={this.state.activeTeamId} component={Home} />
+        <ProtectedRoute path="/noteam" exact activeTeamId={this.state.activeTeamId} component={NoTeam} />
       </Router>
     )
   }
