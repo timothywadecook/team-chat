@@ -11,24 +11,24 @@ import './App.css';
 
 class App extends Component {
   state = {
-    login: false
+    token: false
   }
 
   componentDidMount() {
-    // On successfull login
-    fc.on('authenticated', login => {
-      console.log('successful login', login)
-      this.setState({ login: true })
+    // On successful login
+    fc.on('authenticated', response => {
+      console.log('successful login', response.accessToken)
+      this.setState({ token: response.accessToken })
     })
   }
 
   render() {
-    return(
+    return (
       <Router>
         <Route path="/" exact component={Index} />
-        <Route path="/login" exact component={Login} />
-        <Route path="/register" exact component={Register} />
-        <ProtectedRoute path="/home" exact login={this.state.login} component={Home} />
+        <Route path="/login" exact render={props => <Login token={this.state.token} {...props} />} />
+        <Route path="/register" exact render={props => <Register token={this.state.token} {...props} />} />
+        <ProtectedRoute path="/home" exact token={this.state.token} component={Home} />
       </Router>
     )
   }

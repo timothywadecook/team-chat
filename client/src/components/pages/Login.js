@@ -7,7 +7,6 @@ class Login extends React.Component {
     email: '',
     password: '',
     error: null,
-    token: null,
   }
 
   /**
@@ -32,40 +31,30 @@ class Login extends React.Component {
       email: this.state.email,
       password: this.state.password,
     })
-    .then(response => {
-      this.setState({ token: response })
-      return fc.passport.verifyJWT(response.accessToken);
-    })
-    // .then(payload => {
-    //   return fc.service('users').get(payload.userId);
-    // })
-    // .then(user => {
-    //   fc.set('user', user);
-    // })
-    .catch(error => {
-      this.setState({ error })
-    });
+      .catch(error => {
+        this.setState({ error })
+      });
   }
 
   render() {
     return (
-      this.state.token ? (
+      this.props.token ? (
         <Redirect to="/home" />
       ) : (
-      <div>
-        <Link to="/register">Register</Link>
-        {this.state.error ? (<p>{this.state.error.message}</p>) : '' }
-        <form>
-          <label htmlFor="email">Email</label>
-          <input id="email" name="email" type="text" placeholder="email" required onChange={this.handleInput} />
+          <div>
+            <Link to="/register">Register</Link>
+            {this.state.error ? (<p>{this.state.error.message}</p>) : ''}
+            <form>
+              <label htmlFor="email">Email</label>
+              <input id="email" name="email" type="text" placeholder="email" required onChange={this.handleInput} />
 
-          <label htmlFor="password">Password</label>
-          <input id="password" type="password" name="password" placeholder="email" required onChange={this.handleInput} />
+              <label htmlFor="password">Password</label>
+              <input id="password" type="password" name="password" placeholder="email" required onChange={this.handleInput} />
 
-          <button onClick={this.handleSubmit}>Login</button>
-        </form>
-      </div>
-      )
+              <button onClick={this.handleSubmit}>Login</button>
+            </form>
+          </div>
+        )
     )
   }
 }

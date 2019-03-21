@@ -1,13 +1,12 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 
-function ProtectedRoute({ component: Component, login, ...rest }) {
-  console.log(login)
+function ProtectedRoute({ component: Component, token, ...rest }) {
   return (
     <Route
       {...rest}
       render={props =>
-        login ? (
+        token ? (
           <Component {...props} />
         ) : (
           <Redirect
