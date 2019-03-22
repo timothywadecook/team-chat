@@ -1,56 +1,34 @@
 # team-chat
 
-> A cross platform team chat application
+> A cross platform real-time team chat application using Sockets.io, Mongo, Express, and Node. Front end applications were built using React and React Native. A web framework called [Feathers](http://feathersjs.com) was used to streamline the build out and make API interactions easier by creating services, and to make Sockets.io implementation easier. Feathers also enabled us to create hooks which were useful for doing things that normally might be done with a a middleware. 
 
 ## About
 
-This project uses [Feathers](http://feathersjs.com). An open source web framework for building modern real-time applications.
+This project is a simple, easy to use hub for small business teams. 
 
-## Getting Started
+## Getting Started with Team-Chat
 
-Getting up and running is as easy as 1, 2, 3.
+Getting up and running is as easy as 1, 2, 3, 4.
 
-1. Make sure you have [NodeJS](https://nodejs.org/) and [npm](https://www.npmjs.com/) installed.
-2. Install your dependencies
+1. Run mongod. And make sure you have [NodeJS](https://nodejs.org/) and [npm](https://www.npmjs.com/) installed. 
+2. Install your dependencies (note this will also npm install all dependencies in the /client folder)
 
     ```
     cd path/to/team-chat; npm install
     ```
 
-3. Start your app
+3. Start the server
 
     ```
     npm start
+    ```
+4. Start the React client
+
+    ```
+    cd client && npm start
     ```
 
 ## Testing
 
 Simply run `npm test` and all your tests in the `test/` directory will be run.
 
-## Scaffolding
-
-Feathers has a powerful command line interface. Here are a few things it can do:
-
-```
-$ npm install -g @feathersjs/cli          # Install Feathers CLI
-
-$ feathers generate service               # Generate a new Service
-$ feathers generate hook                  # Generate a new Hook
-$ feathers help                           # Show all commands
-```
-
-## Help
-
-For more information on all the things you can do with Feathers visit [docs.feathersjs.com](http://docs.feathersjs.com).
-
-## Changelog
-
-__0.1.0__
-
-- Initial release
-
-## License
-
-Copyright (c) 2018
-
-Licensed under the [MIT license](LICENSE).
