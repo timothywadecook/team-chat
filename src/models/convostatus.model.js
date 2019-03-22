@@ -9,7 +9,7 @@ module.exports = function (app) {
     conversationId: {type: [ mongooseClient.Schema.Types.ObjectId ], ref: "conversations" },
     userId: {type: [ mongooseClient.Schema.Types.ObjectId ], ref: "users" },
     status: {
-      types: String,
+      type: String,
       required: "conversation status is required",
       enum: ["unread", "unreplied", "replied"],
       default: "unread"

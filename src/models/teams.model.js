@@ -12,11 +12,12 @@ module.exports = function (app) {
     // The id of the user that owns the model
     ownerId: {
       type: mongooseClient.Schema.Types.ObjectId,
+      ref: "users",
       required: true,
     },
 
     // This is the list of conversation ids that belong to team
-    conversationIds: { type: [ mongooseClient.Schema.Types.ObjectId ] },
+    conversationIds: { type: [ mongooseClient.Schema.Types.ObjectId ], ref: "conversations" },
   }, {
     timestamps: true
   });
