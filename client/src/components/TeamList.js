@@ -27,6 +27,7 @@ const MembersStickyHeader = (props) => {
     </div>
 }
 
+
 // assume props includes {status, name convoId, preview, elapsedTime, openConversation()}
 // status = [read, unreplied, replied]
 // styling classes defined: listItem, [read, unreplied, replied], listName, previewText, elapsedTime
