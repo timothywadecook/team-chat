@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { MDBContainer, MDBBtn, MDBModal, MDBModalBody, MDBModalHeader, MDBModalFooter, MDBInput } from 'mdbreact';
+import { fc } from '../../feathersClient';
 
 class ModalPage extends Component {
     state = {
@@ -20,7 +21,10 @@ class ModalPage extends Component {
       }
     
     handleClick = (e) => {
-        
+        fc.service('teams').create({name: this.state.teamInput})
+        .then((data) => {
+            console.log(data)
+        })
     }
 
     render() {

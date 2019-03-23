@@ -1,10 +1,11 @@
 import React from 'react';
-import CreateGroup from './createGroup'
+import CreateTeam from './createTeam'
+import TeamPage from './TeamPage'
 
 function Home(props) {
   const activeTeamId = props.activeTeamId;
-  return activeTeamId ? (<h2>Home for team {activeTeamId}</h2>) 
-  : <CreateGroup/>
+  return activeTeamId ? <TeamPage/>
+  : <CreateTeam/>
 
 }
 

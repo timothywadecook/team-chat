@@ -11,8 +11,8 @@ module.exports = function (app) {
 
     // The id of the user that owns the model
     ownerId: {
-      type: mongooseClient.Schema.Types.ObjectId,
-      required: true,
+      type: mongooseClient.Schema.Types.ObjectId
+      //required: true,
     },
 
     // This is the list of conversation ids that belong to team
