@@ -13,7 +13,7 @@ import './App.css';
 class App extends Component {
   state = {
     token: false,
-    activeTeamId: "the best team"
+    activeTeamId: ""
   }
 
   componentDidMount() {
