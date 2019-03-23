@@ -54,7 +54,17 @@ class App extends Component {
           ownerId: this.state.activeUserId
       })
       .then((data) => {
-          this.setState({activeTeamId: data._id});
+          fc.service("users").patch(this.state.activeUserId, {
+            teamIds: data._id
+          }).then(() => {
+            fc.service("conversations").create({
+              name: "General",
+              userIds: this.state.activeUserId
+            }).then((response) => {
+              console.log(response);
+              this.setState({activeTeamId: data._id});
+            })
+          }); 
       });
   }
 
