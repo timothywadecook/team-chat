@@ -14,7 +14,8 @@ class App extends Component {
   state = {
     token: false,
     activeUserId: "",
-    activeTeamId: ""
+    activeTeamId: "",
+    teamInput: ""
   }
 
   componentDidMount() {
@@ -40,14 +41,32 @@ class App extends Component {
     })
   }
 
+  teamNameInput = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value,
+      error: null
+    })
+  }
+
+  teamCreate = (e) => {
+      fc.service('teams').create({
+          name: this.state.teamInput,
+          ownerId: this.state.activeUserId
+      })
+      .then((data) => {
+          this.setState({activeTeamId: data._id});
+      });
+  }
+
+
   render() {
     return (
       <Router>
         <Route path="/" exact component={Index} />
         <Route path="/login" exact render={props => <Login token={this.state.token} {...props} />} />
         <Route path="/register" exact render={props => <Register token={this.state.token} {...props} />} />
-        <ProtectedRoute path="/home" exact token={this.state.token} activeTeamId={this.state.activeTeamId} activeUserId={this.state.activeUserId} component={Home} />
-        <ProtectedRoute path="/noteam" exact activeTeamId={this.state.activeTeamId} activeUserId={this.state.activeUserId} component={NoTeam} />
+        <ProtectedRoute path="/home" exact token={this.state.token} activeTeamId={this.state.activeTeamId} activeUserId={this.state.activeUserId} teamNameInput={this.teamNameInput} teamCreate={this.teamCreate} teamName={this.state.teamInput} component={Home} />
+        {/* <ProtectedRoute path="/noteam" exact activeTeamId={this.state.activeTeamId} activeUserId={this.state.activeUserId} component={NoTeam} /> */}
       </Router>
     )
   }

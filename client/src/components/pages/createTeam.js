@@ -4,30 +4,13 @@ import { fc } from '../../feathersClient';
 
 class CreateTeam extends Component {
     state = {
-        modal: false,
-        teamInput: ''
+        modal: false
     }
 
     toggle = () => {
         this.setState({
             modal: !this.state.modal
         });
-    }
-    handleInput = (e) => {
-        this.setState({
-          [e.target.name]: e.target.value,
-          error: null
-        })
-      }
-    
-    handleClick = (e) => {
-        fc.service('teams').create({
-            name: this.state.teamInput,
-            ownerId: this.props.activeUserId
-        })
-        .then((data) => {
-            console.log(data);
-        })
     }
 
     render() {
@@ -39,8 +22,8 @@ class CreateTeam extends Component {
                     <MDBModalHeader toggle={this.toggle}>Please Enter a Team Name</MDBModalHeader>
                     <MDBModalBody>
                         <MDBInput
-                            value = {this.state.teamInput}
-                            onChange={this.handleInput}
+                            value = {this.props.teamName}
+                            onChange={this.props.teamNameInput}
                             name="teamInput"
                             type="textarea"
                             label="Team Name"
@@ -49,7 +32,7 @@ class CreateTeam extends Component {
                         />
                     </MDBModalBody>
                     <MDBModalFooter>
-                        <MDBBtn color="primary" onClick={this.handleClick}>Create Team</MDBBtn>
+                        <MDBBtn color="primary" onClick={this.props.teamCreate}>Create Team</MDBBtn>
                     </MDBModalFooter>
                 </MDBModal>
             </MDBContainer>

@@ -1,13 +1,13 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 
-function ProtectedRoute({ component: Component, token, activeTeamId, activeUserId, ...rest }) {
+function ProtectedRoute({ component: Component, token, activeTeamId, activeUserId, teamNameInput, teamCreate, teamName, ...rest }) {
   return (
     <Route
       {...rest}
       render={props =>
         token ? (
-          <Component activeTeamId={activeTeamId} activeUserId={activeUserId} {...props} />
+          <Component activeTeamId={activeTeamId} activeUserId={activeUserId} teamCreate={teamCreate} teamNameInput={teamNameInput} teamName={teamName} {...props} />
         ) : (
           <Redirect
             to={{
