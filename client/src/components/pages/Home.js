@@ -1,8 +1,12 @@
 import React from 'react';
+import CreateTeam from './CreateTeam'
+import TeamPage from './TeamPage'
 
 function Home(props) {
-  const activeTeam = props.activeTeam;
-  return activeTeam ? (<h2>Home for team {activeTeam.name}</h2>) : (<h2>You aint got no team</h2>)
+  const activeTeamId = props.activeTeamId;
+  return activeTeamId ? <TeamPage/>
+  : <CreateTeam/>
+
 }
 
 export default Home;

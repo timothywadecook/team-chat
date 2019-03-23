@@ -13,7 +13,7 @@ class App extends Component {
   state = {
     token: false,
     activeUser: {},
-    activeTeam: {name: "Baller Team"}
+    activeTeamId: {name: "Baller Team"}
   }
 
   componentDidMount() {
