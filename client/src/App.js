@@ -13,7 +13,9 @@ import './App.css';
 class App extends Component {
   state = {
     token: false,
-    activeTeamId: ""
+    activeUser: "",
+    activeTeamId: "",
+    teamInput: ""
   }
 
   componentDidMount() {
@@ -26,9 +28,46 @@ class App extends Component {
 
     // On successful login
     fc.on('authenticated', response => {
-      this.setState({ token: response.accessToken })
+      const setUser = async (token) => {
+        const payload = await fc.passport.verifyJWT(response.accessToken);
+        const user = await fc.service("users").get(payload.userId);
+        this.setState({
+          token: token,
+          activeUser: user,
+          activeTeamId: user.teamIds[0]
+        });
+      }
+      setUser(response.accessToken);
     })
   }
+
+  teamNameInput = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value,
+      error: null
+    })
+  }
+
+  teamCreate = (e) => {
+      fc.service('teams').create({
+          name: this.state.teamInput,
+          ownerId: this.state.activeUser._id
+      })
+      .then((data) => {
+          fc.service("users").patch(this.state.activeUser._id, {
+            teamIds: data._id
+          }).then(() => {
+            fc.service("conversations").create({
+              name: "General",
+              userIds: this.state.activeUser._id
+            }).then((response) => {
+              console.log(response);
+              this.setState({activeTeamId: data._id});
+            })
+          }); 
+      });
+  }
+
 
   render() {
     return (
@@ -36,8 +75,8 @@ class App extends Component {
         <Route path="/" exact component={Index} />
         <Route path="/login" exact render={props => <Login token={this.state.token} {...props} />} />
         <Route path="/register" exact render={props => <Register token={this.state.token} {...props} />} />
-        <ProtectedRoute path="/home" exact token={this.state.token} activeTeamId={this.state.activeTeamId} component={Home} />
-        <ProtectedRoute path="/noteam" exact activeTeamId={this.state.activeTeamId} component={NoTeam} />
+        <ProtectedRoute path="/home" exact token={this.state.token} activeTeamId={this.state.activeTeamId} activeUser={this.state.activeUser} teamNameInput={this.teamNameInput} teamCreate={this.teamCreate} teamName={this.state.teamInput} component={Home} />
+        {/* <ProtectedRoute path="/noteam" exact activeTeamId={this.state.activeTeamId} activeUserId={this.state.activeUserId} component={NoTeam} /> */}
       </Router>
     )
   }
