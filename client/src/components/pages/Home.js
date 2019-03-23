@@ -5,7 +5,7 @@ import TeamPage from './TeamPage'
 function Home(props) {
   const activeTeamId = props.activeTeamId;
   return activeTeamId ? <TeamPage/>
-  : <CreateTeam/>
+  : <CreateTeam activeUserId={props.activeUserId}/>
 
 }
 

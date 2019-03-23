@@ -13,6 +13,7 @@ import './App.css';
 class App extends Component {
   state = {
     token: false,
+    activeUserId: "",
     activeTeamId: ""
   }
 
@@ -26,7 +27,16 @@ class App extends Component {
 
     // On successful login
     fc.on('authenticated', response => {
-      this.setState({ token: response.accessToken })
+      const setUser = async (token) => {
+        const payload = await fc.passport.verifyJWT(response.accessToken);
+        const user = await fc.service("users").get(payload.userId);
+        this.setState({
+          token: token,
+          activeUserId: user._id,
+          activeTeamId: user.teamIds[0]
+        });
+      }
+      setUser(response.accessToken);
     })
   }
 
@@ -36,8 +46,8 @@ class App extends Component {
         <Route path="/" exact component={Index} />
         <Route path="/login" exact render={props => <Login token={this.state.token} {...props} />} />
         <Route path="/register" exact render={props => <Register token={this.state.token} {...props} />} />
-        <ProtectedRoute path="/home" exact token={this.state.token} activeTeamId={this.state.activeTeamId} component={Home} />
-        <ProtectedRoute path="/noteam" exact activeTeamId={this.state.activeTeamId} component={NoTeam} />
+        <ProtectedRoute path="/home" exact token={this.state.token} activeTeamId={this.state.activeTeamId} activeUserId={this.state.activeUserId} component={Home} />
+        <ProtectedRoute path="/noteam" exact activeTeamId={this.state.activeTeamId} activeUserId={this.state.activeUserId} component={NoTeam} />
       </Router>
     )
   }

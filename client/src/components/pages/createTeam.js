@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { MDBContainer, MDBBtn, MDBModal, MDBModalBody, MDBModalHeader, MDBModalFooter, MDBInput } from 'mdbreact';
 import { fc } from '../../feathersClient';
 
-class ModalPage extends Component {
+class CreateTeam extends Component {
     state = {
         modal: false,
         teamInput: ''
@@ -21,9 +21,12 @@ class ModalPage extends Component {
       }
     
     handleClick = (e) => {
-        fc.service('teams').create({name: this.state.teamInput})
+        fc.service('teams').create({
+            name: this.state.teamInput,
+            ownerId: this.props.activeUserId
+        })
         .then((data) => {
-            console.log(data)
+            console.log(data);
         })
     }
 
@@ -54,4 +57,4 @@ class ModalPage extends Component {
     }
 }
 
-export default ModalPage;
+export default CreateTeam;
