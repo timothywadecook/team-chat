@@ -13,7 +13,8 @@ class App extends Component {
   state = {
     token: false,
     activeUser: {},
-    activeTeamId: {name: "Baller Team"}
+    activeTeamId: "",
+    teamInput: ""
   }
 
   componentDidMount() {
@@ -34,12 +35,42 @@ class App extends Component {
         this.setState({
           token: token,
           activeUser: user,
-          activeTeam: user.teamIds[0]
+          activeTeamId: user.teamIds[0]
         })
       }
       setUser(response.accessToken)
     })
     }
+
+
+
+  teamNameInput = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value,
+      error: null
+    })
+  }
+  teamCreate = (e) => {
+      fc.service('teams').create({ // create the team given the input name and set the active user as owner
+          name: this.state.teamInput,
+          ownerId: this.state.activeUser._id
+      })
+      .then((data) => {
+          fc.service("users").patch(this.state.activeUser._id, { // add new team to this User
+            teamIds: data._id
+          }).then(() => { // create default General converation
+            fc.service("conversations").create({
+              type: "group",
+              name: "General",
+              userIds: this.state.activeUser._id
+            }).then((response) => { // set the activeTeamId to the new team
+              console.log(response);
+              this.setState({activeTeamId: data._id});
+            })
+          }); 
+      });
+  }
+
 
   render() {
     return (
@@ -47,7 +78,7 @@ class App extends Component {
         <Route path="/" exact component={Index} />
         <Route path="/login" exact render={props => <Login token={this.state.token} {...props} />} />
         <Route path="/register" exact render={props => <Register token={this.state.token} {...props} />} />
-        <ProtectedRoute path="/home" exact token={this.state.token} activeTeam={this.state.activeTeam} component={Home} />
+        <ProtectedRoute path="/home" exact token={this.state.token} activeTeamId={this.state.activeTeamId} activeUser={this.state.activeUser} teamNameInput={this.teamNameInput} teamCreate={this.teamCreate} teamName={this.state.teamInput} component={Home} />
       </Router>
     )
   }
