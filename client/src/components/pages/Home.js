@@ -5,7 +5,7 @@ import TeamPage from './TeamPage'
 function Home(props) {
   const activeTeamId = props.activeTeamId;
   console.log(activeTeamId)
-  return activeTeamId ? <TeamPage {...props}/>
+  return activeTeamId ? <TeamPage activeUser={props.activeUser} {...props}/>
   : <CreateTeam teamCreate={props.teamCreate} teamNameInput={props.teamNameInput}/>
 
 }
