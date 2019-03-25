@@ -46,6 +46,13 @@ class App extends Component {
       }
       setUser(response.accessToken)
     })
+
+      // Listen for when the user logs out
+      fc.on('logout', response => {
+        this.setState({
+          token: null,
+        })
+      })
     }
 
 
