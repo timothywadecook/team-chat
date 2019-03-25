@@ -1,11 +1,11 @@
 import React from "react";
-import { MDBContainer, MDBRow, MDBCol, EdgeHeader } from "mdbreact";
-import { fchmod } from "fs";
+// import { MDBContainer, MDBRow, MDBCol, EdgeHeader } from "mdbreact";
+// import { fchmod } from "fs";
 import { fc } from '../../feathersClient';
 
-// addGroup() onClick should cause the Add Group modal to pop up 
+// addGroup() onClick should cause the Add Group modal to pop up
 // addMember() onClick should case the Add Member modal to pop up
-// styling classes defined: stickyHeader 
+// styling classes defined: stickyHeader
 const GroupsStickyHeader = (props) => {
   return (
     <div className="header">
@@ -38,7 +38,7 @@ const TeamListItem = props => {
 }
 
 
-  // this.props =  activeTeamId, activeUser,  teamCreate, teamNameInput, teamName, {...props} 
+  // this.props =  activeTeamId, activeUser,  teamCreate, teamNameInput, teamName, {...props}
 class TeamPage extends React.Component {
     state={
       teamMembers: [],
@@ -88,6 +88,8 @@ class TeamPage extends React.Component {
       const user = this.props.activeUser;
       const teamId = this.props.activeTeamId;
       this.getData(teamId, user);
+      // Listen to created conversation and add the new convo in real-time
+      fc.service('conversations').on('created', this.addConversation);
     }
 
     componentDidUpdate(prevProps) {
@@ -98,6 +100,16 @@ class TeamPage extends React.Component {
       }
     }
 
+    /**
+     * Add a message to state
+     */
+    addConversation = (convo) => {
+      if(convo.type === 'group') {
+        this.setState({ groupConvos: this.state.groupConvos.concat( [convo])})
+      } else if (convo.type === 'member' && convo.userIds.includes(this.props.activeUser._id)) {
+        this.setState({ memberConvos: this.state.memberConvos.concat( [convo])})
+      }
+    }
 
     addGroup = (e) => {
       e.preventDefault();
@@ -109,9 +121,9 @@ class TeamPage extends React.Component {
         userIds: this.state.teamMembers
       })
       .then(async newGroup => {
-        console.log('this.props', this.props.activeUser.name);
+        // console.log('this.props', this.props.activeUser.name);
         const groupConvos = await fc.service('conversations').find({query: {teamId: this.props.activeTeamId, userId: this.props.activeUser.id, type: "group"}});
-        console.log('group convos add group', groupConvos.data)
+        // console.log('group convos add group', groupConvos.data)
         this.setState({
           groupConvos: groupConvos.data
         })
@@ -121,15 +133,15 @@ class TeamPage extends React.Component {
     // on addMember() click, prompt for invitee email address, and add the email to invitedEmails array on team (to be checked later on registration)
     addMember = (e) => {
       e.preventDefault();
-      console.log("add member button clicked")
+      // console.log("add member button clicked")
       const email = prompt('Enter email of invitee')
       fc.service('teams').patch(this.props.activeTeamId, {$push: {invitedEmails: email}})
     }
-    
+
     // when a conversation is clicked, open it up in ConversationPage ?
     openConversation = (e) => {
       e.preventDefault();
-      console.log("a conversation was clicked")
+      // console.log("a conversation was clicked")
     }
 
     render() {
