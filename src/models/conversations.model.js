@@ -8,14 +8,18 @@ module.exports = function (app) {
   const conversations = new Schema({
     name: { 
       type: String, 
-      required: true 
+      required: false 
     },
     type: {
       type: String,
       enum: ["group", "member", "incoming"],
       required: true
     },
-    messagesIds: { type: [ mongooseClient.Schema.Types.ObjectId ], ref: "messages" },
+    teamId: {
+      type: mongooseClient.Schema.Types.ObjectId,
+      ref: "team",
+      required: "teamId required"
+    },
     userIds: { type: [ mongooseClient.Schema.Types.ObjectId ], ref: "users" },
     preview: {
       type: String,
