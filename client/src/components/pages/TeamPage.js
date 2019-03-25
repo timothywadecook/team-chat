@@ -44,7 +44,9 @@ class TeamPage extends React.Component {
       teamMembers: [],
       teamName: "",
       groupConvos: [],
-      memberConvos: []
+      memberConvos: [],
+      messageView: false,
+      activeConvo: ""
     }
 
     componentDidMount() {
@@ -136,21 +138,37 @@ class TeamPage extends React.Component {
     // when a conversation is clicked, open it up in ConversationPage ?
     openConversation = (e) => {
       e.preventDefault();
-      // console.log("a conversation was clicked")
+      console.log(e.target);
+      if(this.state.activeConvo === e.currentTarget.id && this.state.messageView){
+        this.setState({messageView: false});
+      } else {
+        this.setState({messageView: true, activeConvo: e.currentTarget.id});
+      } 
     }
 
     render() {
       return (
         <div>
           <h1 className="header">{this.state.teamName}</h1>
+          {this.state.messageView ? <div className="sideBar">
           <GroupsStickyHeader addGroup={this.addGroup} {...this.props} />
           {this.state.groupConvos.length > 0 ? this.state.groupConvos.map(convo => (
-            <TeamListItem key={convo._id} openConversation={this.openConversation} {...convo} />
+            <TeamListItem key={convo._id} openConversation={this.openConversation} {...convo}/>
           )) : <h3 className="listItem">No Group Conversations Exist</h3>}
           <MembersStickyHeader addMember={this.addMember} {...this.props} />
           {this.state.memberConvos.length > 0 ? this.state.memberConvos.map(convo => (
             <TeamListItem key={convo._id} openConversation={this.openConversation} {...convo} />
-          )) : <h3 className="listItem">No Member Conversations Exist</h3> }
+          )) : <h3 className="listItem">No Member Conversations Exist</h3> } <MessagePage convoId={this.state.activeConvo} activeUser={this.props.activeUser}/></div> : 
+          <div>
+          <GroupsStickyHeader addGroup={this.addGroup} {...this.props} />
+          {this.state.groupConvos.length > 0 ? this.state.groupConvos.map(convo => (
+            <TeamListItem key={convo._id} openConversation={this.openConversation} {...convo}/>
+          )) : <h3 className="listItem">No Group Conversations Exist</h3>}
+          <MembersStickyHeader addMember={this.addMember} {...this.props} />
+          {this.state.memberConvos.length > 0 ? this.state.memberConvos.map(convo => (
+            <TeamListItem key={convo._id} openConversation={this.openConversation} {...convo} />
+          )) : <h3 className="listItem">No Member Conversations Exist</h3> }</div> }
+          
         </div>
       )
     }
