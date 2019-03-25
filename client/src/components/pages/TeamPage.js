@@ -47,49 +47,55 @@ class TeamPage extends React.Component {
       memberConvos: []
     }
 
+    getData = async (teamId, user) => {
+      const team = await fc.service('teams').get({ _id: teamId })
+      const teamName = team.name;
+      let teamMembers = await fc.service('users').find({query: {teamIds: teamId}})
+      let groupConvos = await fc.service('conversations').find({query: {teamId: teamId, userIds: user._id, type: "group"}})  
+      let memberConvos = await fc.service('conversations').find({query: {teamId: teamId, userIds: user._id, type: "member"}})
+      memberConvos = memberConvos.data;
+      groupConvos = groupConvos.data;
+      teamMembers = teamMembers.data;
+      // create the member to member threads between the new member and all other members
+      if (memberConvos.length === 0) {
+        for (let i=0; i<teamMembers.length; i++) {
+          if (user._id !== teamMembers[i]._id) {
+            const convo = await fc.service('conversations').create({
+              name: user.name + ' ' + teamMembers[i].name,
+              userIds: [user._id, teamMembers[i]._id],
+              type: "member",
+              teamId: teamId
+            })
+            memberConvos.push(convo)
+          }
+        }
+        // create the "(you)" thread for a user upon first login on new team
+        const myConvo = await fc.service('conversations').create({teamId:teamId, type: "member", name: user.name + " (you)", userIds: user._id}) 
+        console.log('myconvo ', myConvo)
+        memberConvos.unshift(myConvo)
+      };
+      if (groupConvos.length === 0) {groupConvos = await fc.service('conversations').patch(null, {$push: {userIds: user._id}}, {query: {teamId: teamId, type: "group"}})}
+      console.log(memberConvos, groupConvos)
+      this.setState({
+        teamMembers: teamMembers,
+        teamName: teamName,
+        groupConvos: groupConvos,
+        memberConvos: memberConvos
+      })
+    }
+
     componentDidMount() {
       const user = this.props.activeUser;
       const teamId = this.props.activeTeamId;
-      console.log("user and team id", user.id, user._id, teamId)
+      this.getData(teamId, user);
+    }
 
-      const getData = async (teamId, user) => {
-        const team = await fc.service('teams').get({ _id: teamId })
-        const teamName = team.name;
-        let teamMembers = await fc.service('users').find({query: {teamIds: teamId}})
-        let groupConvos = await fc.service('conversations').find({query: {teamId: teamId, userIds: user._id, type: "group"}})  
-        let memberConvos = await fc.service('conversations').find({query: {teamId: teamId, userIds: user._id, type: "member"}})
-        memberConvos = memberConvos.data;
-        groupConvos = groupConvos.data;
-        teamMembers = teamMembers.data;
-        // create the member to member threads between the new member and all other members
-        if (memberConvos.length === 0) {
-          for (let i=0; i<teamMembers.length; i++) {
-            if (user._id !== teamMembers[i]._id) {
-              const convo = await fc.service('conversations').create({
-                name: user.name + ' ' + teamMembers[i].name,
-                userIds: [user._id, teamMembers[i]._id],
-                type: "member",
-                teamId: teamId
-              })
-              memberConvos.push(convo)
-            }
-          }
-          // create the "(you)" thread for a user upon first login on new team
-          const myConvo = await fc.service('conversations').create({teamId:teamId, type: "member", name: user.name + " (you)", userIds: user._id}) 
-          console.log('myconvo ', myConvo)
-          memberConvos.unshift(myConvo)
-        };
-        if (groupConvos.length === 0) {groupConvos = await fc.service('conversations').patch(null, {$push: {userIds: user._id}}, {query: {teamId: teamId, type: "group"}})}
-        console.log(memberConvos, groupConvos)
-        this.setState({
-          teamMembers: teamMembers,
-          teamName: teamName,
-          groupConvos: groupConvos,
-          memberConvos: memberConvos
-        })
+    componentDidUpdate(prevProps) {
+      const user = this.props.activeUser;
+      const teamId = this.props.activeTeamId;
+      if (prevProps.activeUser !== this.props.activeUser || prevProps.activeTeamId !== this.props.activeTeamId) {
+        this.getData(teamId, user)
       }
-      console.log('do you see this on refresh?', user.name, user, teamId)
-      getData(teamId, user);
     }
 
 
