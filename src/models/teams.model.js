@@ -16,8 +16,10 @@ module.exports = function (app) {
       required: true,
     },
 
-    // This is the list of conversation ids that belong to team
-    conversationIds: { type: [ mongooseClient.Schema.Types.ObjectId ], ref: "conversations" },
+    invitedEmails: {
+      type: Array,
+    }
+
   }, {
     timestamps: true
   });

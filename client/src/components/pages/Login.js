@@ -41,18 +41,25 @@ class Login extends React.Component {
       this.props.token ? (
         <Redirect to="/home" />
       ) : (
-          <div>
-            <Link to="/register">Register</Link>
+          <div className="formContainer">
+            <h1>Login</h1>
             {this.state.error ? (<p>{this.state.error.message}</p>) : ''}
             <form>
-              <label htmlFor="email">Email</label>
-              <input id="email" name="email" type="text" placeholder="email" required onChange={this.handleInput} />
-
-              <label htmlFor="password">Password</label>
-              <input id="password" type="password" name="password" placeholder="email" required onChange={this.handleInput} />
-
-              <button onClick={this.handleSubmit}>Login</button>
+              <div className="formRow">
+                <label htmlFor="email">Email</label>
+                <input className="formInput" id="email" name="email" type="text" placeholder="email" required onChange={this.handleInput} />
+              </div>
+              <br></br>
+              <div className="formRow">
+                <label htmlFor="password">Password</label>
+                <input className="formInput" id="password" type="password" name="password" placeholder="password" required onChange={this.handleInput} />
+              </div>
+              <br></br>
+              <div className="formRow">
+                <button className="formBtn" onClick={this.handleSubmit}>Login</button>
+              </div> 
             </form>
+            <Link to="/register">new here? Register</Link>
           </div>
         )
     )
