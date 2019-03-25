@@ -1,0 +1,76 @@
+.listItem {
+    clear: both;
+    width: 60%;
+    margin: 10px auto;
+    padding: 10px;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+    box-shadow: 5px 5px 20px #888;
+}
+
+.sideBar {
+    width: 20%;
+}
+
+.notifyDot {
+    height: 100%;
+    padding: 5px;
+    margin: 5px;
+}
+
+.addBtn {
+    padding: 5px;
+    float: right;
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.stickyHeader {
+    float: left;
+    font-weight: bold;
+    margin: 5px 100px 5px 5px;
+}
+
+.notifyDot {
+    float: left;
+}
+
+.header {
+    clear: both;
+    width: 60%;
+    margin: 0px auto;
+}
+
+.formContainer {
+    background-color: whitesmoke;
+    padding: 50px;
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 10px;
+    margin: 10px auto;
+    box-shadow: 5px 5px 20px #888;
+}
+
+.formRow {
+   width: 300px;
+}
+
+
+.formInput {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border-color: transparent;
+}
+
+.formBtn {
+    margin: 10px auto;
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border-color: transparent;
+    background-color: #282c34;
+    color: white;
+}

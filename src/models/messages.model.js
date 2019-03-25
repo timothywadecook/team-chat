@@ -11,7 +11,12 @@ module.exports = function (app) {
       required: true,
       maxlength: [500, "Message must be less than 500 characters"]
     },
-    userId: { type: [ mongooseClient.Schema.Types.ObjectId ], ref: "users" }
+    senderId: { type: mongooseClient.Schema.Types.ObjectId, ref: "users" },
+    senderName: {
+      type: String,
+      required: "Name is required"
+    },
+    conversationId: mongooseClient.Schema.Types.ObjectId
   }, {
     timestamps: true
   });

@@ -24,14 +24,14 @@ class Register extends React.Component {
     .catch(error => this.setState({ error }));
   };
 
-  handleSubmit = e => {
+  handleSubmit = async e => {
     e.preventDefault();
 
     fc.service("users")
       .create({
         name: this.state.name,
         email: this.state.email,
-        password: this.state.password
+        password: this.state.password,
       })
       .then(res => {
         this.login();
@@ -45,42 +45,54 @@ class Register extends React.Component {
     return this.props.token ? (
       <Redirect to="/home" />
     ) : (
-        <div>
-          <Link to="/login">Login</Link>
+        <div className="formContainer">
+          <h1>Register</h1>
           <form>
-            <label htmlFor="name">Full Name</label>
-            <input
-              id="name"
-              name="name"
-              type="text"
-              placeholder="name"
-              autoFocus
-              required
-              onChange={this.handleInput}
-            />
-
-            <label htmlFor="email">Email</label>
-            <input
-              id="email"
-              name="email"
-              type="text"
-              placeholder="email"
-              required
-              onChange={this.handleInput}
-            />
-
-            <label htmlFor="password">Password</label>
-            <input
-              id="password"
-              type="password"
-              name="password"
-              placeholder="email"
-              required
-              onChange={this.handleInput}
-            />
-
-            <button onClick={this.handleSubmit}>Register</button>
+            <div className="formRow">
+              <label htmlFor="name">Full Name</label>
+              <input
+                className="formInput"
+                id="name"
+                name="name"
+                type="text"
+                placeholder="name"
+                autoFocus
+                required
+                onChange={this.handleInput}
+              />
+            </div>
+            <br></br>
+            <div className="formRow">
+              <label htmlFor="email">Email</label>
+              <input
+                className="formInput"
+                id="email"
+                name="email"
+                type="text"
+                placeholder="email"
+                required
+                onChange={this.handleInput}
+              />
+            </div>
+            <br></br>
+            <div className="formRow">
+              <label htmlFor="password">Password</label>
+              <input
+                className="formInput"
+                id="password"
+                type="password"
+                name="password"
+                placeholder="password"
+                required
+                onChange={this.handleInput}
+              />
+            </div>
+            <br></br>
+            <div className="formRow">
+              <button className="formBtn" onClick={this.handleSubmit}>Register</button>
+            </div>
           </form>
+          <Link to="/login">already member? Login</Link>
         </div>
       );
   }

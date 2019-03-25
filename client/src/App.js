@@ -24,24 +24,29 @@ class App extends Component {
      * do anything (fail silently).
      */
     fc.authenticate().catch(() => {});
-
     // On successful login
     fc.on('authenticated', response => {
       const setUser = async (token) => {
         const payload = await fc.passport.verifyJWT(token)
-        console.log(payload)
-        const user = await fc.service('users').get(payload.userId)
-        console.log(user)
+        let user = await fc.service('users').get(payload.userId)
+        const invitation = await fc.service('teams').find({query: {invitedEmails: user.email}}) // only works for 1 invitation at a time right now
+        console.log('invitations query = ', invitation)
+        if (invitation.data.length === 1) {
+          const invitingTeamId = invitation.data[0]._id;
+          const activeTeamId = invitingTeamId;
+          console.log('inviting team id = ', invitingTeamId)
+          user = await fc.service('users').patch(user, {teamIds: invitingTeamId, activeTeamId: activeTeamId})
+          console.log('updated user?  ', user)
+        }
         this.setState({
           token: token,
           activeUser: user,
-          activeTeamId: user.teamIds[0]
+          activeTeamId: user.activeTeamId
         })
       }
       setUser(response.accessToken)
     })
     }
-
 
 
   teamNameInput = (e) => {
@@ -56,18 +61,31 @@ class App extends Component {
           ownerId: this.state.activeUser._id
       })
       .then((data) => {
-          fc.service("users").patch(this.state.activeUser._id, { // add new team to this User
-            teamIds: data._id
+          fc.service("users").patch(this.state.activeUser._id, { // add new team to this User and set activeTeam in db
+            teamIds: data._id,
+            activeTeamId: data._id
           }).then(() => { // create default General converation
-            fc.service("conversations").create({
-              type: "group",
-              name: "General",
-              userIds: this.state.activeUser._id
-            }).then((response) => { // set the activeTeamId to the new team
-              console.log(response);
-              this.setState({activeTeamId: data._id});
-            })
-          }); 
+            fc.service("conversations").create(
+              {
+                teamId: data._id,
+                type: "group",
+                name: "General",
+                userIds: this.state.activeUser._id
+              },
+            )
+            fc.service("conversations").create(
+              {
+                teamId: data._id,
+                type: "member",
+                name: `${this.state.activeUser.name} (you)`,
+                userIds: this.state.activeUser._id
+              }
+            )
+          })
+          .then((response) => { // set the activeTeamId to the new team
+            console.log(response);
+            this.setState({activeTeamId: data._id});
+          })
       });
   }
 
