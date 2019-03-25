@@ -10,6 +10,11 @@ module.exports = function (app) {
       type: String, 
       required: true 
     },
+    type: {
+      type: String,
+      enum: ["group", "member", "incoming"],
+      required: true
+    },
     messagesIds: { type: [ mongooseClient.Schema.Types.ObjectId ], ref: "messages" },
     userIds: { type: [ mongooseClient.Schema.Types.ObjectId ], ref: "users" },
     preview: {

@@ -1,11 +1,5 @@
+import React, { Component } from 'react';
 
-
-
-// TeamList will render the team list comprised of:
-// Groups (StickyHeader)
-// list of groups
-// Members (Sticky Header)
-// list of members 
 
 // addGroup() onClick should cause the Add Group modal to pop up 
 // addMember() onClick should case the Add Member modal to pop up
@@ -18,7 +12,6 @@ const GroupsStickyHeader = (props) => {
     </div>
 }
 
-
 const MembersStickyHeader = (props) => {
     return 
     <div>
@@ -26,7 +19,6 @@ const MembersStickyHeader = (props) => {
         <button onClick={props.addMember}> <i className="material-icons" style="font-size:12px;color:grey;">add_circle_outline</i> </button>
     </div>
 }
-
 
 // assume props includes {status, name convoId, preview, elapsedTime, openConversation()}
 // status = [read, unreplied, replied]
@@ -42,3 +34,26 @@ const TeamListItem = props => {
 
 }
 
+
+// TeamList will render the team list comprised of:
+//      <GroupsStickyHeader />
+//      list of groups mapped over <TeamListItem />
+//      <MembersStickyHeader />
+//      list of members mapped over <TeamListItem />
+
+class TeamList extends React.Component {
+
+
+
+    // get groupList (note: changes to db or state should trigger re-render)
+    // get memberList (changes to db or state should trigger re-render)
+
+    render() {
+        return
+    <div>
+        <GroupsStickyHeader {...props} />
+        <MembersStickyHeader {...props} />
+    </div>
+    }
+
+}

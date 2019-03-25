@@ -1,10 +1,11 @@
 import React from 'react';
-import CreateTeam from './createTeam'
+import CreateTeam from './CreateTeam'
 import TeamPage from './TeamPage'
 
 function Home(props) {
   const activeTeamId = props.activeTeamId;
-  return activeTeamId ? <TeamPage/>
+  console.log(activeTeamId)
+  return activeTeamId ? <TeamPage {...props}/>
   : <CreateTeam teamCreate={props.teamCreate} teamNameInput={props.teamNameInput}/>
 
 }
