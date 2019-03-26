@@ -17,6 +17,8 @@ class TeamPage extends React.Component {
     customerConvos: [],
     messageView: false,
     activeConvo: '',
+    groupName: "",
+    groupModal: false
   };
 
   getData = async (teamId, user) => {
@@ -106,12 +108,15 @@ class TeamPage extends React.Component {
     }
   };
 
-  addGroup = e => {
+  groupNameChange = (event) => {
+    this.setState({groupName: event.target.value});
+  }
+
+  addGroup = (e) => {
     e.preventDefault();
-    const name = prompt('Enter group name');
     fc.service('conversations')
       .create({
-        name: name,
+        name: this.state.groupName,
         type: 'group',
         teamId: this.props.activeTeamId,
         userIds: this.state.teamMembers,
@@ -130,9 +135,15 @@ class TeamPage extends React.Component {
         // console.log('group convos add group', groupConvos.data)
         this.setState({
           groupConvos: groupConvos.data,
+          groupModal: false
         });
       });
   };
+
+  toggleModal = (event) => {
+    event.preventDefault();
+    this.setState({groupModal: !this.state.groupModal});
+  }
 
   // on addMember() click, prompt for invitee email address, and add the email to invitedEmails array on team (to be checked later on registration)
   addMember = e => {
@@ -153,7 +164,7 @@ class TeamPage extends React.Component {
       <div className="row" id="team-page">
         <div className="col-4 flex-column justify-content-center pt-5 pr-0 border-right">
         <TeamHeader teamName={this.state.teamName} activeUser={this.props.activeUser} teamChange={this.props.teamChange}/>
-            <GroupHeader addGroup={this.addGroup} {...this.props} />
+            <GroupHeader addGroup={this.addGroup} value={this.state.groupName} modalStatus={this.state.groupModal} groupNameHandler={this.groupNameChange} toggleModal={this.toggleModal} {...this.props} />
             {this.state.groupConvos.length > 0 ? (
                 this.state.groupConvos.map(convo => <TeamListItem key={convo._id} openConversation={this.openConversation} {...convo} />
                 )

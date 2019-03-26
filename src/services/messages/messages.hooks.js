@@ -4,10 +4,10 @@ module.exports = {
   before: {
     all: [ authenticate('jwt') ],
     find: [
-      function(context) {
-        context.params.query = { $limit: 50 };
-        return context;
-      }
+      // function(context) {
+      //   context.params.query = { $limit: 50 };
+      //   return context;
+      // }
     ],
     get: [],
     create: [],

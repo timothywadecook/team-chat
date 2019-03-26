@@ -46,10 +46,6 @@ class TeamHeader extends React.Component {
     this.setState({modal: !this.state.modal});
   }
 
-  openModal(event) {
-    event.preventDefault();
-  }  
-
   render() {
     const { dropdownOpen } = this.state;
     const { teamName } = this.props;
@@ -59,7 +55,7 @@ class TeamHeader extends React.Component {
         <ButtonDropdown color="bg-white" isOpen={dropdownOpen} toggle={this.toggle}>
           <DropdownToggle caret>{ teamName }</DropdownToggle>
           <DropdownMenu>
-            {this.state.teams && this.state.teams.map(team => <DropdownItem onClick={this.props.teamChange} value={team._id}>{team.name}</DropdownItem>)}
+            {this.state.teams && this.state.teams.map((team, i) => <DropdownItem key={i} onClick={this.props.teamChange} value={team._id}>{team.name}</DropdownItem>)}
             <DropdownItem onClick={this.toggleModal}>Create Team</DropdownItem>
           </DropdownMenu>
         </ButtonDropdown>
