@@ -3,7 +3,12 @@ const { authenticate } = require('@feathersjs/authentication').hooks;
 module.exports = {
   before: {
     all: [ authenticate('jwt') ],
-    find: [],
+    find: [
+      function(context) {
+        context.params.query = { $limit: 50 };
+        return context;
+      }
+    ],
     get: [],
     create: [],
     update: [],
