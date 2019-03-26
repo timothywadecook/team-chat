@@ -18,7 +18,9 @@ class TeamPage extends React.Component {
     messageView: false,
     activeConvo: '',
     groupName: "",
-    groupModal: false
+    groupModal: false,
+    userEmail: "",
+    userModal: false
   };
 
   getData = async (teamId, user) => {
@@ -140,7 +142,7 @@ class TeamPage extends React.Component {
       });
   };
 
-  toggleModal = (event) => {
+  toggleGroupModal = (event) => {
     event.preventDefault();
     this.setState({groupModal: !this.state.groupModal});
   }
@@ -149,28 +151,37 @@ class TeamPage extends React.Component {
   addMember = e => {
     e.preventDefault();
     // console.log("add member button clicked")
-    const email = prompt('Enter email of invitee');
-    fc.service('teams').patch(this.props.activeTeamId, { $push: { invitedEmails: email } });
+    fc.service('teams').patch(this.props.activeTeamId, { $push: { invitedEmails: this.state.userEmail } });
+    this.setState({userModal: false});
   };
+
+  emailChange =(event) => {
+    this.setState({userEmail: event.target.value});
+  }
+
+  toggleEmail = (event) => {
+    event.preventDefault();
+    this.setState({userModal: !this.state.userModal});
+  }
 
   // when a conversation is clicked, open it up in ConversationPage ?
   openConversation = e => {
     e.preventDefault();
     this.setState({ activeConvo: e.currentTarget.id });
   };
-
+  
   render() {
     return (
       <div className="row" id="team-page">
         <div className="col-4 flex-column justify-content-center pt-5 pr-0 border-right">
         <TeamHeader teamName={this.state.teamName} activeUser={this.props.activeUser} teamChange={this.props.teamChange}/>
-            <GroupHeader addGroup={this.addGroup} value={this.state.groupName} modalStatus={this.state.groupModal} groupNameHandler={this.groupNameChange} toggleModal={this.toggleModal} {...this.props} />
+            <GroupHeader addGroup={this.addGroup} value={this.state.groupName} modalStatus={this.state.groupModal} groupNameHandler={this.groupNameChange} toggleModal={this.toggleGroupModal} {...this.props} />
             {this.state.groupConvos.length > 0 ? (
                 this.state.groupConvos.map(convo => <TeamListItem key={convo._id} openConversation={this.openConversation} {...convo} />
                 )
               ) : ( <h6 className='listItem'>No Group Conversations Exist</h6>)
             }
-            <MemberHeader addMember={this.addMember} {...this.props} />
+            <MemberHeader addMember={this.addMember} modalStatus={this.state.userModal} emailChange={this.emailChange} value={this.state.userEmail} {...this.props} toggleModal={this.toggleEmail} />
             {this.state.memberConvos.length > 0 ? (
               this.state.memberConvos.map(convo => (
                 <TeamListItem key={convo._id} openConversation={this.openConversation} {...convo} />

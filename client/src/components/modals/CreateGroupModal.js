@@ -16,7 +16,7 @@ const CreateGroupModal = props => (
       toggle={props.toggle}
       className={props.className}
     >
-      <ModalHeader toggle={props.toggle}>Modal title</ModalHeader>
+      <ModalHeader toggle={props.toggle}>Create a New Group</ModalHeader>
       <ModalBody>
         <InputGroup>
           <Input

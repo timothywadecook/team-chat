@@ -60,7 +60,7 @@ class CreateTeamModal extends React.Component {
           toggle={this.props.toggle}
           className={this.props.className}
         >
-          <ModalHeader toggle={this.props.toggle}>Modal title</ModalHeader>
+          <ModalHeader toggle={this.props.toggle}>Create a New Team</ModalHeader>
           <ModalBody>
             <InputGroup>
               <Input placeholder="Enter New Team Name" value={this.state.teamName} onChange={this.changeHandler}/>
