@@ -2,13 +2,11 @@
 const createService = require('feathers-mongoose');
 const createModel = require('../../models/incoming-sms.model');
 const hooks = require('./incoming-sms.hooks');
-const MessagingResponse = require('twilio').twiml.MessagingResponse; // Twilio!
 
+// middleware to give 200 message back to twilio
 function responseForTwilio(req, res, next) {
-  const twiml = new MessagingResponse;
-  const msg = twiml.message('thanks for your text!');
   res.writeHead(200, {'Content-Type': 'text/xml'});
-  res.end(twiml.toString());
+  res.end();
   // next();
 }
 

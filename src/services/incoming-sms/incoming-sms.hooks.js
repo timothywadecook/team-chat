@@ -2,8 +2,6 @@
 
 const processIncomingSms = require('../../hooks/process-incoming-sms');
 
-const resfortwilio = require('../../hooks/resfortwilio');
-
 module.exports = {
   before: {
     all: [],
@@ -19,7 +17,7 @@ module.exports = {
     all: [],
     find: [],
     get: [],
-    create: [resfortwilio()],
+    create: [() => {console.log('incoming sms stuff done')}],
     update: [],
     patch: [],
     remove: []

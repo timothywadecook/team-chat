@@ -1,8 +1,8 @@
 const assert = require('assert');
 const feathers = require('@feathersjs/feathers');
-const resfortwilio = require('../../src/hooks/resfortwilio');
+const processOutgoing = require('../../src/hooks/process-outgoing');
 
-describe('\'resfortwilio\' hook', () => {
+describe('\'process-outgoing\' hook', () => {
   let app;
 
   beforeEach(() => {
@@ -15,7 +15,7 @@ describe('\'resfortwilio\' hook', () => {
     });
 
     app.service('dummy').hooks({
-      after: resfortwilio()
+      after: processOutgoing()
     });
   });
 
