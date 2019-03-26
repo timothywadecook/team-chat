@@ -1,5 +1,7 @@
 import React from 'react';
-import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
+import CreateTeamModal from "../modals/CreateTeamModal";
+import { fc } from "../../feathersClient";
 
 /**
  * This is the header for the sidebar that allows the user to switch teams
@@ -7,13 +9,45 @@ import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reac
 class TeamHeader extends React.Component {
   state = {
     dropdownOpen: false,
+    modal: false,
+    teams: []
   };
+
+  componentDidMount(){
+    this.getTeams();
+  }
+
+  componentDidUpdate(prevState){
+    if(this.state.teams && prevState.teams && this.state.teams.toString() !== prevState.teams.toString()){
+      this.getTeams();
+    }
+  }
+
+  getTeams(){
+    const teamNames = [];
+    for(let i = 0; i < this.props.activeUser.teamIds.length; i++){
+      fc.service("teams").find(this.props.activeUser.teamIds[i])
+        .then(function(team){
+          console.log(team);
+          teamNames.push(team.data[i].name);
+        });
+    }
+    this.setState({teams: teamNames});
+  }
 
   toggle = () => {
     this.setState({
       dropdownOpen: !this.state.dropdownOpen,
     });
   }
+
+  toggleModal = () => {
+    this.setState({modal: !this.state.modal});
+  }
+
+  openModal(event) {
+    event.preventDefault();
+  }  
 
   render() {
     const { dropdownOpen } = this.state;
@@ -24,11 +58,11 @@ class TeamHeader extends React.Component {
         <ButtonDropdown color="bg-white" isOpen={dropdownOpen} toggle={this.toggle}>
           <DropdownToggle caret>{ teamName }</DropdownToggle>
           <DropdownMenu>
-            <DropdownItem header>Action</DropdownItem>
-            <DropdownItem disabled>Action</DropdownItem>
-            <DropdownItem>Another Action</DropdownItem>
+            {this.state.teams && this.state.teams.map(team => <DropdownItem>{team}</DropdownItem>)}
+            <DropdownItem onClick={this.toggleModal}>Create Team</DropdownItem>
           </DropdownMenu>
         </ButtonDropdown>
+        <CreateTeamModal activeUser={this.props.activeUser} modalState={this.state.modal} toggle={this.toggleModal}/>
       </div>
     );
   }
