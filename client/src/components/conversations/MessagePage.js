@@ -33,8 +33,16 @@ class MessagePage extends React.Component {
       });
   };
 
+  addMessageToConversation = (message) => {
+    if(this.props.convoId === message.conversationId) {
+      this.setState({ messages: [...this.state.messages, message] });
+    }
+  }
+
   componentDidMount() {
     this.getMessages();
+    // listen for new messages
+    fc.service('messages').on('created', this.addMessageToConversation);
   }
 
   componentDidUpdate(prevProps){
