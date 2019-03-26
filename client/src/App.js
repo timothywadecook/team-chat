@@ -55,7 +55,7 @@ class App extends Component {
   
     teamChange = (event) => {
       event.preventDefault();
-      console.log("team has been changed");
+      fc.service("users").patch(this.state.activeUser, {activeTeamId: event.target.value});
       this.setState({activeTeamId: event.target.value});
     }
 
