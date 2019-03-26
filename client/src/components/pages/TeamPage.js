@@ -28,10 +28,20 @@ class TeamPage extends React.Component {
       .service('conversations')
       .find({ query: { teamId: teamId, userIds: user._id, type: 'member' } });
     memberConvos = memberConvos.data;
+    for(let i = 1; i < memberConvos.length; i++){
+      memberConvos[i].name = memberConvos[i].name.replace(this.props.activeUser.name, "");
+    }
     groupConvos = groupConvos.data;
     teamMembers = teamMembers.data;
     // create the member to member threads between the new member and all other members
     if (memberConvos.length === 0) {
+      // create the "(you)" thread for a user upon first login on new team
+      const myConvo = await fc
+      .service('conversations')
+      .create({ teamId: teamId, type: 'member', name: user.name + ' (you)', userIds: user._id });
+      console.log('myconvo ', myConvo);
+      memberConvos.push(myConvo);
+
       for (let i = 0; i < teamMembers.length; i++) {
         if (user._id !== teamMembers[i]._id) {
           const convo = await fc.service('conversations').create({
@@ -43,12 +53,7 @@ class TeamPage extends React.Component {
           memberConvos.push(convo);
         }
       }
-      // create the "(you)" thread for a user upon first login on new team
-      const myConvo = await fc
-        .service('conversations')
-        .create({ teamId: teamId, type: 'member', name: user.name + ' (you)', userIds: user._id });
-      console.log('myconvo ', myConvo);
-      memberConvos.unshift(myConvo);
+
     }
     if (groupConvos.length === 0) {
       groupConvos = await fc
@@ -76,12 +81,13 @@ class TeamPage extends React.Component {
     fc.service('conversations').on('created', this.addConversation);
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     const user = this.props.activeUser;
     const teamId = this.props.activeTeamId;
     if (
       prevProps.activeUser !== this.props.activeUser ||
-      prevProps.activeTeamId !== this.props.activeTeamId
+      prevProps.activeTeamId !== this.props.activeTeamId ||
+      prevState.teamMembers.length !== this.state.teamMembers.length
     ) {
       this.getData(teamId, user);
     }
