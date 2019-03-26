@@ -74,6 +74,11 @@ class TeamPage extends React.Component {
 
     // Listen to created conversation and add the new convo in real-time
     fc.service('conversations').on('created', this.addConversation);
+    fc.service('messages').on('created', this.addMessageToConversation);
+  }
+
+  addMessageToConversation = (message) => {
+    const conversations = this.state.memberConvos.concat(this.state.groupConvos);
   }
 
   componentDidUpdate(prevProps) {
