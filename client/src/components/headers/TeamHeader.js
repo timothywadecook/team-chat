@@ -17,8 +17,9 @@ class TeamHeader extends React.Component {
     this.getTeams();
   }
 
-  componentDidUpdate(prevState){
-    if(this.state.teams && prevState.teams && this.state.teams.toString() !== prevState.teams.toString()){
+  componentDidUpdate(prevProps, prevState){
+    if(prevState.teams && this.state.teams.length !== prevState.teams.length){
+      console.log("update is running");
       this.getTeams();
     }
   }
@@ -29,7 +30,7 @@ class TeamHeader extends React.Component {
       fc.service("teams").find(this.props.activeUser.teamIds[i])
         .then(function(team){
           console.log(team);
-          teamNames.push(team.data[i].name);
+          teamNames.push(team.data[i]);
         });
     }
     this.setState({teams: teamNames});
@@ -58,7 +59,7 @@ class TeamHeader extends React.Component {
         <ButtonDropdown color="bg-white" isOpen={dropdownOpen} toggle={this.toggle}>
           <DropdownToggle caret>{ teamName }</DropdownToggle>
           <DropdownMenu>
-            {this.state.teams && this.state.teams.map(team => <DropdownItem>{team}</DropdownItem>)}
+            {this.state.teams && this.state.teams.map(team => <DropdownItem onClick={this.props.teamChange} value={team._id}>{team.name}</DropdownItem>)}
             <DropdownItem onClick={this.toggleModal}>Create Team</DropdownItem>
           </DropdownMenu>
         </ButtonDropdown>

@@ -148,7 +148,7 @@ class TeamPage extends React.Component {
     return (
       <div className="row" id="team-page">
         <div className="col-4 flex-column justify-content-center pt-5 pr-0 border-right">
-        <TeamHeader teamName={this.state.teamName} activeUser={this.props.activeUser} />
+        <TeamHeader teamName={this.state.teamName} activeUser={this.props.activeUser} teamChange={this.props.teamChange}/>
         {this.state.messageView ? (
           <div className='sideBar'>
             <GroupHeader addGroup={this.addGroup} {...this.props} />
