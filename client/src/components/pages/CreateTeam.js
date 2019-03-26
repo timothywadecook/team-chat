@@ -1,42 +1,63 @@
-import React, { Component } from 'react';
-import { MDBContainer, MDBBtn, MDBModal, MDBModalBody, MDBModalHeader, MDBModalFooter, MDBInput } from 'mdbreact';
+import React, { Component } from "react";
+import {
+  Container,
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Input,
+  InputGroup
+} from "reactstrap";
 
 class CreateTeam extends Component {
-    state = {
-        modal: false
-    }
+  state = {
+    modal: false
+  };
 
-    toggle = () => {
-        this.setState({
-            modal: !this.state.modal
-        });
-    }
+  toggle = () => {
+    this.setState({
+      modal: !this.state.modal
+    });
+  };
 
-    render() {
-        return (
-            <MDBContainer>
-                <h1>Please feel free to create a team or wait until someone else adds you to their team!</h1>
-                <MDBBtn onClick={this.toggle}>Create Team</MDBBtn>
-                <MDBModal isOpen={this.state.modal} toggle={this.toggle}>
-                    <MDBModalHeader toggle={this.toggle}>Please Enter a Team Name</MDBModalHeader>
-                    <MDBModalBody>
-                        <MDBInput
-                            value = {this.props.teamName}
-                            onChange={this.props.teamNameInput}
-                            name="teamInput"
-                            type="textarea"
-                            label="Team Name"
-                            rows="1"
-                            icon="user-friends"
-                        />
-                    </MDBModalBody>
-                    <MDBModalFooter>
-                        <MDBBtn color="primary" onClick={this.props.teamCreate}>Create Team</MDBBtn>
-                    </MDBModalFooter>
-                </MDBModal>
-            </MDBContainer>
-        );
-    }
+  render() {
+    return (
+      <Container>
+        <h1>
+          Please feel free to create a team or wait until someone else adds you
+          to their team!
+        </h1>
+        <Button color="info" onClick={this.toggle}>
+          Create Team
+        </Button>
+        <Modal isOpen={this.state.modal} toggle={this.toggle}>
+          <ModalHeader toggle={this.toggle}>
+            Please Enter a Team Name
+          </ModalHeader>
+          <ModalBody>
+            <InputGroup>
+              <Input
+                value={this.props.teamName}
+                onChange={this.props.teamNameInput}
+                name="teamInput"
+                type="text"
+                label="Team Name"
+              />
+            </InputGroup>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="primary" onClick={this.props.teamCreate}>
+              Create Team
+            </Button>
+            <Button color="secondary" onClick={this.toggle}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </Modal>
+      </Container>
+    );
+  }
 }
 
 export default CreateTeam;
