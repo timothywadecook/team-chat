@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { MDBContainer, MDBBtn, MDBModal, MDBModalBody, MDBModalHeader, MDBModalFooter, MDBInput } from 'mdbreact';
-import { fc } from '../../feathersClient';
 
 class CreateTeam extends Component {
     state = {

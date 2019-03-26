@@ -1,26 +1,7 @@
 import React from "react";
+import MessageBar from './MessageBar';
+import MessageBoard from './MessageBoard';
 import { fc } from "../../feathersClient";
-
-const MessageBar = props => (
-  <form>
-    <input onChange={props.changeHandler} value={props.value}/>
-    <button onClick={props.clickHandler}>Send</button>
-  </form>
-);
-
-const MessageBoard = props => (
-  <div>
-    {props.messages &&
-      props.messages.map(message => <Message key={message._id} name={message.senderName} body={message.body} />)}
-  </div>
-);
-
-const Message = props => (
-  <div>
-    <h3>{props.name}</h3>
-    <p>{props.body}</p>
-  </div>
-);
 
 class MessagePage extends React.Component {
   state = {
@@ -34,7 +15,6 @@ class MessagePage extends React.Component {
 
   clickHandler = event => {
     event.preventDefault();
-    console.log(this.props.activeUser);
     fc.service("messages")
       .create({
         body: this.state.messageInput,
@@ -76,11 +56,13 @@ class MessagePage extends React.Component {
     return (
       <div>
         <MessageBoard messages={this.state.messages} />
-        <MessageBar
-          changeHandler={this.changeHandler}
-          clickHandler={this.clickHandler}
-          value={this.state.messageInput}
-        />
+        <div class="px-4 border-top d-flex pb-4 bg-light conversation-view-footer fixed-bottom">
+          <MessageBar
+            changeHandler={this.changeHandler}
+            clickHandler={this.clickHandler}
+            value={this.state.messageInput}
+          />
+        </div>
       </div>
     );
   }
