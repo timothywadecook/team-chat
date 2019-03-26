@@ -3,6 +3,7 @@ import { fc } from '../../feathersClient';
 import TeamHeader from '../headers/TeamHeader';
 import GroupHeader from '../headers/GroupHeader';
 import MemberHeader from '../headers/MemberHeader';
+import CustomerHeader from "../headers/CustomerHeader";
 import ConversationView from '../conversations/ConversationView';
 import TeamListItem from '../TeamListItem';
 
@@ -13,6 +14,7 @@ class TeamPage extends React.Component {
     teamName: '',
     groupConvos: [],
     memberConvos: [],
+    customerConvos: [],
     messageView: false,
     activeConvo: '',
   };
@@ -143,11 +145,7 @@ class TeamPage extends React.Component {
   // when a conversation is clicked, open it up in ConversationPage ?
   openConversation = e => {
     e.preventDefault();
-    if (this.state.activeConvo === e.currentTarget.id && this.state.messageView) {
-      this.setState({ messageView: false });
-    } else {
-      this.setState({ messageView: true, activeConvo: e.currentTarget.id });
-    }
+    this.setState({ activeConvo: e.currentTarget.id });
   };
 
   render() {
@@ -155,27 +153,6 @@ class TeamPage extends React.Component {
       <div className="row" id="team-page">
         <div className="col-4 flex-column justify-content-center pt-5 pr-0 border-right">
         <TeamHeader teamName={this.state.teamName} activeUser={this.props.activeUser} teamChange={this.props.teamChange}/>
-        {this.state.messageView ? (
-          <div className='sideBar'>
-            <GroupHeader addGroup={this.addGroup} {...this.props} />
-            {this.state.groupConvos.length > 0 ? (
-              this.state.groupConvos.map(convo => (
-                <TeamListItem key={convo._id} openConversation={this.openConversation} {...convo} />
-              ))
-            ) : (
-              <h6 className='listItem'>No Group Conversations Exist</h6>
-            )}
-            <MemberHeader addMember={this.addMember} {...this.props} />
-            {this.state.memberConvos.length > 0 ? (
-              this.state.memberConvos.map(convo => (
-                <TeamListItem key={convo._id} openConversation={this.openConversation} {...convo} />
-              ))
-            ) : (
-              <h6 className='listItem'>No Member Conversations Exist</h6>
-            )}{' '}
-          </div>
-        ) : (
-          <div>
             <GroupHeader addGroup={this.addGroup} {...this.props} />
             {this.state.groupConvos.length > 0 ? (
                 this.state.groupConvos.map(convo => <TeamListItem key={convo._id} openConversation={this.openConversation} {...convo} />
@@ -190,8 +167,12 @@ class TeamPage extends React.Component {
             ) : (
               <h3 className='listItem'>No Member Conversations Exist</h3>
             )}
-          </div>
-        )}
+            <CustomerHeader addMember={this.addMember} {...this.props} />
+            {this.state.customerConvos.length > 0 ? (
+              this.state.customerConvos.map(convo => <TeamListItem key={convo._id} openConversation={this.openConversation} {...convo} />
+                ) 
+            ) : (<h6 className="listItem">No Customer Conversations Exist</h6>)
+          }
         </div>
         <ConversationView activeUser={this.props.activeUser} conversationId={this.state.activeConvo}/>
       </div>
