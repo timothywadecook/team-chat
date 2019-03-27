@@ -18,21 +18,33 @@ class TeamHeader extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState){
-    if(prevState.teams && this.state.teams.length !== prevState.teams.length){
-      console.log("update is running");
-      this.getTeams();
-    }
+    const teamNames = [];
+    fc.service("users").find({query: {_id: this.props.activeUser._id}})
+      .then(async user => {
+        if(this.state.teams && this.state.teams.length !== user.data[0].teamIds.length){
+          for(let i = 0; i < user.data[0].teamIds.length; i++){
+            await fc.service("teams").find({query: {_id: user.data[0].teamIds[i]}})
+              .then(async (team) => {
+                await teamNames.push(team.data[0]);
+              })
+          }
+          this.setState({teams: teamNames});
+        }
+      });
   }
 
-  getTeams(){
+  async getTeams(){
     const teamNames = [];
     for(let i = 0; i < this.props.activeUser.teamIds.length; i++){
-      fc.service("teams").find(this.props.activeUser.teamIds[i])
-        .then(function(team){
-          console.log(team);
-          teamNames.push(team.data[i]);
+      await fc.service("users").find({query: {_id: this.props.activeUser._id}})
+        .then(async (user) => {
+          await fc.service("teams").find({query: {_id: user.data[0].teamIds[i]}})
+            .then(async (team) => {
+              await teamNames.push(team.data[0]);
+            });
         });
     }
+    console.log(teamNames);
     this.setState({teams: teamNames});
   }
 

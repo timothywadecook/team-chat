@@ -33,7 +33,10 @@ class App extends Component {
         if (invitation.data.length === 1) {
           const invitingTeamId = invitation.data[0]._id;
           const activeTeamId = invitingTeamId;
-          user = await fc.service('users').patch(user, {teamIds: invitingTeamId, activeTeamId: activeTeamId})
+          console.log(user);
+          if(user.teamIds.length < 1){
+            user = await fc.service('users').patch(user, {teamIds: invitingTeamId, activeTeamId: activeTeamId})
+          }
         }
 
         this.setState({
