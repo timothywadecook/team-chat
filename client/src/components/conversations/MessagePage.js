@@ -75,8 +75,13 @@ class MessagePage extends React.Component {
 
   render() {
     return (
+<<<<<<< HEAD
       <div>
         <MessageBoard messages={this.state.messages} activeUser={this.props.activeUser} />
+=======
+      <React.Fragment>
+        <MessageBoard messages={this.state.messages} activeUser={this.props.activeUser}/>
+>>>>>>> 2499ec8f5ad773e18a91576b9bea98fc0c87f20d
         <div className="px-4 border-top d-flex pb-4 bg-light conversation-view-footer fixed-bottom">
           <MessageBar
             changeHandler={this.changeHandler}
@@ -84,7 +89,7 @@ class MessagePage extends React.Component {
             value={this.state.messageInput}
           />
         </div>
-      </div>
+      </React.Fragment>
     );
   }
 }
