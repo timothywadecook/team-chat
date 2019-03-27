@@ -153,12 +153,9 @@ class TeamPage extends React.Component {
     // console.log("add member button clicked")
     fc.service("users").find({query: {email: this.state.userEmail}})
       .then(user => {
-        if(user){
-          console.log(user);
-          console.log("user exists");
+        if(user.email === this.state.userEmail){
           fc.service("users").patch(user.data[0]._id, {$push: {teamIds: this.props.activeTeamId}}).then(user => console.log(user));
         } else {
-          console.log("user does not exist");
           fc.service('teams').patch(this.props.activeTeamId, { $push: { invitedEmails: this.state.userEmail } });
         }
       });
