@@ -34,9 +34,9 @@ class TeamPage extends React.Component {
       .service('conversations')
       .find({ query: { teamId: teamId, userIds: user._id, type: 'member' } });
     memberConvos = memberConvos.data;
-    for(let i = 1; i < memberConvos.length; i++){
-      memberConvos[i].name = memberConvos[i].name.replace(this.props.activeUser.name, "");
-    }
+    // for(let i = 1; i < memberConvos.length; i++){
+    //   memberConvos[i].name = memberConvos[i].name.replace(this.props.activeUser.name, "");
+    // }
     groupConvos = groupConvos.data;
     teamMembers = teamMembers.data;
     // create the member to member threads between the new member and all other members
@@ -59,7 +59,9 @@ class TeamPage extends React.Component {
           memberConvos.push(convo);
         }
       }
-
+    }
+    for(let i = 1; i < memberConvos.length; i++){
+      memberConvos[i].name = memberConvos[i].name.replace(this.props.activeUser.name, "");
     }
     if (groupConvos.length === 0) {
       groupConvos = await fc
@@ -70,6 +72,7 @@ class TeamPage extends React.Component {
           { query: { teamId: teamId, type: 'group' } },
         );
     }
+
     this.setState({
       teamMembers: teamMembers,
       teamName: teamName,
@@ -85,6 +88,9 @@ class TeamPage extends React.Component {
 
     // Listen to created conversation and add the new convo in real-time
     fc.service('conversations').on('created', this.addConversation);
+    fc.service('teams').on('created', (data) => {
+      console.log('new team was created' ,data)
+    })
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -103,9 +109,13 @@ class TeamPage extends React.Component {
    * Add a message to state
    */
   addConversation = convo => {
+    console.log(convo);
+    convo.name = convo.name.replace(this.props.activeUser.name, "");
+    console.log(convo)
     if (convo.type === 'group') {
       this.setState({ groupConvos: this.state.groupConvos.concat([convo]) });
     } else if (convo.type === 'member' && convo.userIds.includes(this.props.activeUser._id)) {
+      console.log("dm was added");
       this.setState({ memberConvos: this.state.memberConvos.concat([convo]) });
     }
   };
@@ -153,9 +163,11 @@ class TeamPage extends React.Component {
     // console.log("add member button clicked")
     fc.service("users").find({query: {email: this.state.userEmail}})
       .then(user => {
-        if(user.email === this.state.userEmail){
+        if(user.data[0].email === this.state.userEmail){
+          console.log("user was found");
           fc.service("users").patch(user.data[0]._id, {$push: {teamIds: this.props.activeTeamId}}).then(user => console.log(user));
         } else {
+          console.log("user was not found");
           fc.service('teams').patch(this.props.activeTeamId, { $push: { invitedEmails: this.state.userEmail } });
         }
       });
