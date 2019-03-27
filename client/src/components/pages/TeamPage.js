@@ -163,7 +163,7 @@ class TeamPage extends React.Component {
     // console.log("add member button clicked")
     fc.service("users").find({query: {email: this.state.userEmail}})
       .then(user => {
-        if(user.data[0].email === this.state.userEmail){
+        if(user.data[0] && user.data[0].email === this.state.userEmail){
           console.log("user was found");
           fc.service("users").patch(user.data[0]._id, {$push: {teamIds: this.props.activeTeamId}}).then(user => console.log(user));
         } else {
