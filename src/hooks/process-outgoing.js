@@ -1,7 +1,7 @@
 // Use this hook to manipulate incoming or outgoing data.
 // For more information on hooks see: http://docs.feathersjs.com/api/hooks.html
 
-const client = require('twilio')(process.env.TWLO_SID, process.env.TWLO_TOKEN);
+const client = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 
 // eslint-disable-next-line no-unused-vars
 module.exports = function (options = {}) {

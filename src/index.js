@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
 const logger = require('./logger');
+require('dotenv').config();
 const app = require('./app');
 const port = app.get('port');
 const server = app.listen(port);
-require('dotenv').config();
 
 process.on('unhandledRejection', (reason, p) =>
   logger.error('Unhandled Rejection at: Promise ', p, reason)
