@@ -62,16 +62,16 @@ class MessagePage extends React.Component {
 
   render() {
     return (
-      <div>
+      <React.Fragment>
         <MessageBoard messages={this.state.messages} activeUser={this.props.activeUser}/>
-        <div className  ="px-4 border-top d-flex pb-4 bg-light conversation-view-footer fixed-bottom">
+        <div className="px-4 border-top d-flex pb-4 bg-light conversation-view-footer fixed-bottom">
           <MessageBar
             changeHandler={this.changeHandler}
             clickHandler={this.clickHandler}
             value={this.state.messageInput}
           />
         </div>
-      </div>
+      </React.Fragment>
     );
   }
 }
