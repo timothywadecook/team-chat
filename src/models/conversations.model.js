@@ -28,6 +28,9 @@ module.exports = function (app) {
       default: "Start a new conversation",
       required: true
     },
+    status: {
+      type: Object
+    },
     activeOutgoing: String,
     contacts: {
       type: Array,
