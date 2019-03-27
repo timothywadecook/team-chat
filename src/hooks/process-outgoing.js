@@ -18,9 +18,9 @@ module.exports = function (options = {}) {
 
     if (convo.type === "incoming") {
       // get the team number for "from"
-      const team = await context.app.service('teams').get(convo.data.teamId);
-      const teamSms = team.data.smsNumber;
-      const {activeOutgoing} = convo.data;
+      const team = await context.app.service('teams').get(convo.teamId);
+      const teamSms = team.smsNumber;
+      const {activeOutgoing} = convo;
 
       client.messages
       .create({

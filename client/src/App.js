@@ -52,6 +52,12 @@ class App extends Component {
         })
       })
     }
+  
+    teamChange = (event) => {
+      event.preventDefault();
+      fc.service("users").patch(this.state.activeUser, {activeTeamId: event.target.value});
+      this.setState({activeTeamId: event.target.value});
+    }
 
 
   teamNameInput = (e) => {
@@ -101,7 +107,7 @@ class App extends Component {
         <Route path="/" exact component={Index} />
         <Route path="/login" exact render={props => <Login token={this.state.token} {...props} />} />
         <Route path="/register" exact render={props => <Register token={this.state.token} {...props} />} />
-        <ProtectedRoute path="/home" exact token={this.state.token} activeTeamId={this.state.activeTeamId} activeUser={this.state.activeUser} teamNameInput={this.teamNameInput} teamCreate={this.teamCreate} teamName={this.state.teamInput} component={Home} />
+        <ProtectedRoute path="/home" exact token={this.state.token} activeTeamId={this.state.activeTeamId} activeUser={this.state.activeUser} teamNameInput={this.teamNameInput} teamCreate={this.teamCreate} teamName={this.state.teamInput} teamChange={this.teamChange} component={Home} />
       </Router>
     )
   }

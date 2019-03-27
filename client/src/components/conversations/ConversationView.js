@@ -16,8 +16,12 @@ class ConversationView extends React.Component {
 
   fetchMessages = (id) => {
     fc.service('conversations').get(id).then(response => {
-      console.log(response)
-      this.setState({ conversation: response })
+      const conversationData = response
+      console.log(conversationData)
+      if(conversationData.type === "member" && conversationData.userIds.length > 1) {
+        conversationData.name = conversationData.name.replace(this.props.activeUser.name, "")
+      }
+      this.setState({ conversation: conversationData })
     }).catch(err => {
       this.setState({ error: err })
     })
