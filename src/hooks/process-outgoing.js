@@ -8,7 +8,6 @@ const client = require('twilio')(accountSid, authToken);
 // eslint-disable-next-line no-unused-vars
 module.exports = function (options = {}) {
   return async context => {
-    console.log('ooooooooooooooopss !!! lol :) ', context.data.senderId);
     // check that message is outbound (not incoming): if senderId is undefined then it is incoming
     // if message was not sent by a user, then do nothing else
     if (!context.data.senderId) {return context}
@@ -16,9 +15,8 @@ module.exports = function (options = {}) {
     const {senderName, conversationId, body} = context.data; // get the message data we need to send outgoing 
 
     const convo = await context.app.service('conversations').get(conversationId);
-    console.log('convo . data . type? ', convo.data)
 
-    if (convo.data.type === "incoming") {
+    if (convo.type === "incoming") {
       // get the team number for "from"
       const team = await context.app.service('teams').get(convo.data.teamId);
       const teamSms = team.data.smsNumber;

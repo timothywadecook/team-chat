@@ -3,8 +3,13 @@ import CreateTeam from './CreateTeam'
 import TeamPage from './TeamPage'
 
 function Home(props) {
-  return props.activeTeamId ? <TeamPage {...props}/>
-  : <CreateTeam teamCreate={props.teamCreate} teamNameInput={props.teamNameInput}/>
+  return (
+    <div>
+      {props.activeTeamId ?
+        <TeamPage {...props}/> :
+        <CreateTeam teamCreate={props.teamCreate} teamNameInput={props.teamNameInput}/>}
+    </div>
+  )
 
 }
 

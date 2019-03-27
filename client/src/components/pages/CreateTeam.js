@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { MDBContainer, MDBBtn, MDBModal, MDBModalBody, MDBModalHeader, MDBModalFooter, MDBInput } from 'mdbreact';
-import { fc } from '../../feathersClient';
 
 class CreateTeam extends Component {
     state = {
@@ -16,7 +15,7 @@ class CreateTeam extends Component {
     render() {
         return (
             <MDBContainer>
-                <h1>Please feel free to create a team or wait until someone else adds you to their team!</h1>
+                <h1>Your email address has not been invited to any teams. Wait to be invited and check back, or feel free to create a new team below.</h1>
                 <MDBBtn onClick={this.toggle}>Create Team</MDBBtn>
                 <MDBModal isOpen={this.state.modal} toggle={this.toggle}>
                     <MDBModalHeader toggle={this.toggle}>Please Enter a Team Name</MDBModalHeader>
