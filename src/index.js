@@ -3,6 +3,7 @@ const logger = require('./logger');
 const app = require('./app');
 const port = app.get('port');
 const server = app.listen(port);
+require('dotenv').config();
 
 process.on('unhandledRejection', (reason, p) =>
   logger.error('Unhandled Rejection at: Promise ', p, reason)
