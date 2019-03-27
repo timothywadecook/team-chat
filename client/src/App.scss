@@ -14,16 +14,15 @@
 }
 
 .conversation-body {
-  height: calc(100vh-160px);
-  max-height: calc(100vh-160px);
-  margin-bottom: 80px;
-  overflow: scroll;
+  height: calc(100vh - 160px);
+  max-height: calc(100vh - 160px);
+  overflow-y: scroll;
+  width: 100%;
 }
 
 .conversation-view-footer {
-  align-items: center;
-  height: 80px;
   position: absolute;
+  padding: 15px 0;
   bottom: 0;
   width: 100%;
 }
