@@ -151,7 +151,8 @@ class TeamPage extends React.Component {
         // console.log('group convos add group', groupConvos.data)
         this.setState({
           groupConvos: groupConvos.data,
-          groupModal: false
+          groupModal: false,
+          groupName: ""
         });
       });
   };
@@ -222,7 +223,7 @@ class TeamPage extends React.Component {
             ) : (<h6 className="listItem">No Customer Conversations Exist</h6>)
           }
         </div>
-        <ConversationView activeUser={this.props.activeUser} conversationId={this.state.activeConvo}/>
+        <ConversationView activeUser={this.props.activeUser} conversationId={this.state.activeConvo} getData={this.getData}/>
       </div>
     );
   }

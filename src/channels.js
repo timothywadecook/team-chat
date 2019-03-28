@@ -49,6 +49,7 @@ module.exports = function(app) {
 
   // when a message is created publish it on the conversation channel
   app.service('messages').publish('created', data => {
+
     return app.channel(`conversation-${data.conversationId}`);
   });
 
