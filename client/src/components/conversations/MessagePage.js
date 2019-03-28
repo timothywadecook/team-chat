@@ -53,10 +53,15 @@ class MessagePage extends React.Component {
 
   getMessages() {
     fc.service("messages")
-      .find({ query: { conversationId: this.props.convoId } })
-      .then(convo => {
-        console.log(convo.data);
-        this.setState({ messages: convo.data});
+      .find({ query: { 
+        $limit: 50,
+        $sort: {
+          createdAt: -1
+        },
+        conversationId: this.props.convoId 
+      }})
+      .then(messages => {
+        this.setState({ messages: messages.data.reverse()});
       });
   }
 
