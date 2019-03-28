@@ -16,6 +16,8 @@ module.exports = function (app) {
       required: true,
     },
 
+    smsNumber: {type: String},
+
     invitedEmails: {
       type: Array,
     }

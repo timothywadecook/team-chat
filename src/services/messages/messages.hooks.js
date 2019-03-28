@@ -1,5 +1,7 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 
+const processOutgoing = require('../../hooks/process-outgoing');
+
 module.exports = {
   before: {
     all: [ authenticate('jwt') ],
@@ -20,7 +22,7 @@ module.exports = {
     all: [],
     find: [],
     get: [],
-    create: [],
+    create: [processOutgoing()],
     update: [],
     patch: [],
     remove: []

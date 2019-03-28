@@ -72,12 +72,16 @@ class TeamPage extends React.Component {
           { query: { teamId: teamId, type: 'group' } },
         );
     }
+    // get customer conversations (aka "incoming")
+    const customerConvos = await fc.service('conversations').find({query: {teamId: teamId, type: 'incoming'}})
+    console.log('customer convos data again', customerConvos.data);
 
     this.setState({
       teamMembers: teamMembers,
       teamName: teamName,
       groupConvos: groupConvos,
       memberConvos: memberConvos,
+      customerConvos: customerConvos.data || []
     });
   };
 

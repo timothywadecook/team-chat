@@ -48,6 +48,7 @@
     "mongoose": "^5.4.19",
     "node-sass": "^4.11.0",
     "serve-favicon": "^2.5.0",
+    "twilio": "^3.29.2",
     "winston": "^3.2.1"
   },
   "devDependencies": {

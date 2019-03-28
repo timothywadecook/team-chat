@@ -27,6 +27,10 @@ module.exports = function (app) {
       maxlength: [30, "Preview must be less than 30 characters long."],
       default: "Start a new conversation",
       required: true
+    },
+    activeOutgoing: String,
+    contacts: {
+      type: Array,
     }
   }, {
     timestamps: true
