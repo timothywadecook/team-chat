@@ -1,9 +1,11 @@
 import React from 'react';
 
+
+// props.status[props.activeUserId]  {props.status[props.activeUserId] + 
 const TeamListItem = props => {
   return (
-    <div className="border border-right-0 teamListItem" id={props._id} onClick={props.openConversation}>
-      <i className='material-icons notifyDot' style={{ fontSize: '20px', color: 'blue' }}>
+    <div className="border border-right-0" id={props._id} onClick={props.openConversation}>
+      <i className= {props.status[props.activeUserId] +' material-icons notifyDot'} style={{ fontSize: '20px' }}>
         fiber_manual_record
       </i>
       <h5 className='listName'>{props.name}</h5>

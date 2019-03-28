@@ -29,7 +29,8 @@ module.exports = function (app) {
       required: true
     },
     status: {
-      type: Object
+      type: Object,
+      default: {}
     },
     activeOutgoing: String,
     contacts: {

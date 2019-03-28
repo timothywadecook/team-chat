@@ -17,7 +17,6 @@ class ConversationView extends React.Component {
   fetchMessages = (id) => {
     fc.service('conversations').get(id).then(response => {
       const conversationData = response
-      console.log(conversationData)
       if(conversationData.type === "member" && conversationData.userIds.length > 1) {
         conversationData.name = conversationData.name.replace(this.props.activeUser.name, "")
       }
@@ -35,7 +34,7 @@ class ConversationView extends React.Component {
         <nav className="navbar navbar-light bg-light d-flex justify-content-center sticky-top">
           <span className="navbar-brand" href="#">{conversation.name}</span>
         </nav>
-        <MessagePage convoId={this.props.conversationId} activeUser={this.props.activeUser}/>
+        <MessagePage getMessages={this.props.getMessages} convoId={this.props.conversationId} activeUser={this.props.activeUser} messages={this.props.messages}/>
       </div>)
       :
       (<div>Click on a convo to view</div>);
