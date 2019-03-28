@@ -13,6 +13,11 @@
   height: 80px;
 }
 
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .conversation-body {
   height: calc(100vh - 160px);
   max-height: calc(100vh - 160px);

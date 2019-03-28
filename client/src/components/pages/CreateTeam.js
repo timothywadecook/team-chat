@@ -1,18 +1,17 @@
 import React, { Component } from "react";
 import {
-  Container,
-  Button,
   Modal,
   ModalHeader,
   ModalBody,
   ModalFooter,
-  Input,
   InputGroup
 } from "reactstrap";
+import { fc } from '../../feathersClient';
 
 class CreateTeam extends Component {
   state = {
-    modal: false
+    modal: false,
+    user: fc.get('user')
   };
 
   toggle = () => {
@@ -23,39 +22,40 @@ class CreateTeam extends Component {
 
   render() {
     return (
-      <Container>
-        <h1>
-          Please feel free to create a team or wait until someone else adds you
-          to their team!
-        </h1>
-        <Button color="info" onClick={this.toggle}>
+      <div className="vw-100 vh-100 flex-center flex-column">
+        <div className="jumbotron w-50 text-center">
+        <h1 className="display-4">Welcome <span role="img" aria-label="welcome">&#x1f44b;</span></h1>
+        <h4 className="">
+          Please feel free to create a team or wait until someone else adds you to their team!
+        </h4>
+        <hr />
+        <button className="btn btn-lg btn-info" onClick={this.toggle}>
           Create Team
-        </Button>
+        </button>
+        </div>
         <Modal isOpen={this.state.modal} toggle={this.toggle}>
           <ModalHeader toggle={this.toggle}>
             Please Enter a Team Name
           </ModalHeader>
           <ModalBody>
             <InputGroup>
-              <Input
+              <input
                 value={this.props.teamName}
                 onChange={this.props.teamNameInput}
                 name="teamInput"
                 type="text"
-                label="Team Name"
+                placeholder="Team name"
               />
             </InputGroup>
           </ModalBody>
           <ModalFooter>
-            <Button color="primary" onClick={this.props.teamCreate}>
+            <button className="btn btn-primary" onClick={this.props.teamCreate}>
               Create Team
-            </Button>
-            <Button color="secondary" onClick={this.toggle}>
-              Cancel
-            </Button>
+            </button>
+            <button className="btn btn-secondary" onClick={this.toggle}>Cancel</button>
           </ModalFooter>
         </Modal>
-      </Container>
+      </div>
     );
   }
 }

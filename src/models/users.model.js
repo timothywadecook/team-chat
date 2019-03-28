@@ -29,12 +29,12 @@ module.exports = function (app) {
     // This is the current team id flag for the current user
     activeTeamId: {
       type: mongooseClient.Schema.Types.ObjectId,
-      ref: "teams",
+      ref: 'teams',
       default: null,
     },
 
     // This is the list of teams ids that a user is on
-    teamIds: { type: [ mongooseClient.Schema.Types.ObjectId ], ref: "teams" }
+    teamIds: { type: [ mongooseClient.Schema.Types.ObjectId ], ref: 'teams' },
   }, {
     timestamps: true
   });

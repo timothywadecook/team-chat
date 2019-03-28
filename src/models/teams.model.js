@@ -12,7 +12,7 @@ module.exports = function (app) {
     // The id of the user that owns the model
     ownerId: {
       type: mongooseClient.Schema.Types.ObjectId,
-      ref: "users",
+      ref: 'users',
       required: true,
     },
 
@@ -20,8 +20,10 @@ module.exports = function (app) {
 
     invitedEmails: {
       type: Array,
-    }
+    },
 
+    // This is the list of user ids for members on a team
+    memberIds: { type: [ mongooseClient.Schema.Types.ObjectId ], ref: 'users' },
   }, {
     timestamps: true
   });

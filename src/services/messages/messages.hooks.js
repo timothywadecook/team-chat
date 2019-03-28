@@ -1,6 +1,6 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 
-const processOutgoing = require('../../hooks/process-outgoing');
+// const processOutgoing = require('../../hooks/process-outgoing');
 
 module.exports = {
   before: {
@@ -22,7 +22,9 @@ module.exports = {
     all: [],
     find: [],
     get: [],
-    create: [processOutgoing()],
+    create: [
+      // processOutgoing()
+    ],
     update: [],
     patch: [],
     remove: []
