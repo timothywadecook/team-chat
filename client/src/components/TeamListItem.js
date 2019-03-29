@@ -2,7 +2,7 @@ import React from 'react';
 
 const TeamListItem = props => {
   return (
-    <div className="border border-right-0 teamListItem" id={props._id} onClick={props.openConversation}>
+    <div className="border border-right-0 teamListItem slide-in-bck-center" id={props._id} onClick={props.openConversation}>
       <i className='material-icons notifyDot' style={{ fontSize: '20px', color: 'blue' }}>
         fiber_manual_record
       </i>

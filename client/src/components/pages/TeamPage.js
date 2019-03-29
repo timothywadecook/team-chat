@@ -200,7 +200,7 @@ class TeamPage extends React.Component {
   render() {
     return (
       <div className="row" id="team-page">
-        <div className="col-4 flex-column justify-content-center pt-5 pr-0 border-right">
+        <div className="col-4 flex-column justify-content-center pt-5 pr-0 border-right slide-in-bck-center">
         <TeamHeader teamName={this.state.teamName} activeUser={this.props.activeUser} teamChange={this.props.teamChange}/>
             <GroupHeader addGroup={this.addGroup} value={this.state.groupName} modalStatus={this.state.groupModal} groupNameHandler={this.groupNameChange} toggleModal={this.toggleGroupModal} {...this.props} />
             {this.state.groupConvos.length > 0 ? (
