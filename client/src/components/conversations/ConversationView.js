@@ -29,13 +29,16 @@ class ConversationView extends React.Component {
 
   render() {
     const { conversation } = this.state;
+    if (conversation ) {
+      console.log('look look conversation type check ', conversation.type)
+    }
 
     return conversation  ?
       (<div className="col-8 pl-0" id='conversation-view'>
         <nav className="navbar navbar-light bg-light d-flex justify-content-center sticky-top">
           <span className="navbar-brand" href="#">{conversation.name}</span>
         </nav>
-        <MessagePage convoId={this.props.conversationId} activeUser={this.props.activeUser}/>
+        <MessagePage convoType={conversation.type} convoId={this.props.conversationId} activeUser={this.props.activeUser}/>
       </div>)
       :
       (<div>Click on a convo to view</div>);

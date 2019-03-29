@@ -53,17 +53,22 @@ class MessagePage extends React.Component {
 
   getMessages() {
     fc.service("messages")
-      .find({ query: { conversationId: this.props.convoId } })
-      .then(convo => {
-        console.log(convo.data);
-        this.setState({ messages: convo.data});
+      .find({ query: { 
+        $limit: 50,
+        $sort: {
+          createdAt: -1
+        },
+        conversationId: this.props.convoId 
+      } })
+      .then(messages => {
+        this.setState({ messages: messages.data.reverse()});
       });
   }
 
   render() {
     return (
       <React.Fragment>
-        <MessageBoard messages={this.state.messages} activeUser={this.props.activeUser}/>
+        <MessageBoard convoType={this.props.convoType} messages={this.state.messages} activeUser={this.props.activeUser}/>
         <div className="px-4 border-top d-flex pb-4 bg-light conversation-view-footer fixed-bottom">
           <MessageBar
             changeHandler={this.changeHandler}
