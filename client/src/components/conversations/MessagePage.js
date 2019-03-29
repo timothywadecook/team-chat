@@ -20,21 +20,22 @@ class MessagePage extends React.Component {
         body: this.state.messageInput,
         senderId: this.props.activeUser._id,
         senderName: this.props.activeUser.name,
-        conversationId: this.props.convoId
+        conversationId: this.props.conversationId
       })
       .then((data) => {
           let preview = data.body;
           if(preview.length > 30){
             preview = preview.substring(0, 30);
           }
-          fc.service("conversations").patch(this.props.convoId, {preview: preview})
+          fc.service("conversations").patch(this.props.conversationId, {preview: preview})
+          this.props.getData(this.props.activeUser.activeTeamId, this.props.activeUser);
         this.getMessages();
         this.setState({messageInput: ""});
       });
   };
 
   addMessageToConversation = (message) => {
-    if(this.props.convoId === message.conversationId) {
+    if(this.props.conversationId === message.conversationId) {
       this.setState({ messages: [...this.state.messages, message] });
     }
   }
@@ -46,17 +47,22 @@ class MessagePage extends React.Component {
   }
 
   componentDidUpdate(prevProps){
-    if(this.props.convoId !== prevProps.convoId){
+    if(this.props.conversationId !== prevProps.conversationId){
         this.getMessages();
     }
   }
 
   getMessages() {
     fc.service("messages")
-      .find({ query: { conversationId: this.props.convoId } })
-      .then(convo => {
-        console.log(convo.data);
-        this.setState({ messages: convo.data});
+      .find({ query: { 
+        $limit: 50,
+        $sort: {
+          createdAt: -1
+        },
+        conversationId: this.props.conversationId 
+      }})
+      .then(messages => {
+        this.setState({ messages: messages.data.reverse()});
       });
   }
 

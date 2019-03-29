@@ -35,7 +35,7 @@ class ConversationView extends React.Component {
         <nav className="navbar navbar-light bg-light d-flex justify-content-center sticky-top">
           <span className="navbar-brand" href="#">{conversation.name}</span>
         </nav>
-        <MessagePage convoId={this.props.conversationId} activeUser={this.props.activeUser}/>
+        <MessagePage {...this.props}/>
       </div>)
       :
       (<div>Click on a convo to view</div>);

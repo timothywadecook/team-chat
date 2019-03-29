@@ -49,6 +49,15 @@ module.exports = function(app) {
 
   // when a message is created publish it on the conversation channel
   app.service('messages').publish('created', data => {
+
     return app.channel(`conversation-${data.conversationId}`);
   });
+
+  // app.service('teams').publish('created', (data, context) => {
+  //   // when a team is created, add a new channel for it
+  //   // when team is created, add user who created it to the channel to listen for updates
+  //   // console.log('-------------------------------------')
+  //   // console.log(context.params.user)
+  //   return app.channel(`team-${data._id}`);
+  // });
 };
