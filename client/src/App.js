@@ -69,24 +69,10 @@ class App extends Component {
   };
 
   teamCreate = e => {
-    // create the team given the input name and set the active user as owner
-    fc.service('teams')
-      .create({
+    fc.service('teams').create({
         name: this.state.teamInput,
       })
       .then(data => {
-        fc.service('conversations').create({
-          teamId: data._id,
-          type: 'group',
-          name: 'General',
-          userIds: this.state.activeUser._id,
-        });
-        fc.service('conversations').create({
-          teamId: data._id,
-          type: 'member',
-          name: `${this.state.activeUser.name} (you)`,
-          userIds: this.state.activeUser._id,
-        });
         this.setState({ activeTeamId: data._id });
       });
   };

@@ -5,6 +5,8 @@ const setActiveTeamOnUser = require('../../hooks/set-active-team-on-user');
 const associateTeamToOwner = require('../../hooks/associate-team-to-owner');
 const addTeamOwnerIdToTeam = require('../../hooks/add-team-owner-id-to-team');
 
+const initializeConversationForTeamCreation = require('../../hooks/initialize-conversation-for-team-creation');
+
 module.exports = {
   before: {
     all: [ authenticate('jwt') ],
@@ -26,6 +28,7 @@ module.exports = {
     create: [
       setActiveTeamOnUser(),
       associateTeamToOwner(),
+      initializeConversationForTeamCreation()
     ],
     update: [],
     patch: [],
