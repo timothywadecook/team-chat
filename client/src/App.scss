@@ -64,6 +64,7 @@ h6 {
   height: 100vh;
   max-height: 100vh;
   overflow-y: auto;
+  padding-left: -5px;
 }
 
 .sendMessage {
@@ -109,8 +110,8 @@ h6 {
   justify-content: center;
 }
 .conversation-body {
-  height: calc(100vh - 160px);
-  max-height: calc(100vh - 160px);
+  height: calc(100vh - 140px);
+  max-height: calc(100vh - 140px);
   background-color: #f8f8f8;
   overflow-y: scroll;
   width: 100%;
@@ -170,6 +171,10 @@ h6 {
 
 .formRow {
   width: 300px;
+}
+.row {
+  margin-left: 0px;
+  margin-right: 0px;
 }
 
 .formInput {
