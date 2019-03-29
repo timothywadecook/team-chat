@@ -1,7 +1,8 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
-const hooks = require('feathers-authentication-hooks')
+const hooks = require('feathers-authentication-hooks');
 
 const setActiveTeamOnUser = require('../../hooks/set-active-team-on-user');
+const associateTeamToOwner = require('../../hooks/associate-team-to-owner');
 
 module.exports = {
   before: {
@@ -21,7 +22,10 @@ module.exports = {
     all: [],
     find: [],
     get: [],
-    create: [setActiveTeamOnUser()],
+    create: [
+      setActiveTeamOnUser(),
+      associateTeamToOwner(),
+    ],
     update: [],
     patch: [],
     remove: []

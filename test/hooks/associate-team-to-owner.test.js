@@ -1,15 +1,16 @@
 var expect = require('chai').expect;
+var assert = require('chai').assert;
 const feathers = require('@feathersjs/feathers');
 const memory = require('feathers-memory');
-const setActiveTeamOnUser = require('../../src/hooks/set-active-team-on-user');
+const associateTeamToOwner = require('../../src/hooks/associate-team-to-owner');
 
-describe('\'setActiveTeamOnUser\' hook', () => {
+describe('\'associateTeamToUser\' hook', () => {
   let app, user;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     const options = {
       id: '_id',
-      startId: 2,
+      startId: '32',
     };
 
     app = feathers();
@@ -19,7 +20,7 @@ describe('\'setActiveTeamOnUser\' hook', () => {
     app.use('/teams', memory(options));
 
     app.service('teams').hooks({
-      after: setActiveTeamOnUser()
+      after: associateTeamToOwner()
     });
   });
 
@@ -29,15 +30,16 @@ describe('\'setActiveTeamOnUser\' hook', () => {
       email: 'test@user.com',
       name: 'Test User',
       password: 'password',
+      teamIds: []
     });
 
     const params = { user };
 
-    const team = await app.service('teams').create({ name: 'Mylo' }, params);
+    const team = await app.service('teams').create({ '_id': 45, name: 'Mylo' }, params);
 
-    const freshUser = await app.service('users').get(2);
+    let refreshUser = await app.service('users').get(32);
 
-    expect(freshUser.activeTeamId).to.equal(team._id);
-    expect(freshUser.activeTeamId).to.equal(2);
+    assert.lengthOf(refreshUser.teamIds, 1, 'The user should have one team inside the array of team ids');
+    expect(refreshUser.teamIds).to.include(45);
   });
 });

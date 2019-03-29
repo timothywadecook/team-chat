@@ -4,9 +4,13 @@
 // eslint-disable-next-line no-unused-vars
 module.exports = function (options = {}) {
   return async context => {
-    console.log('this is after team is created', context.data);
+    const team = context.result;
+    const user = context.params.user;
 
-    console.log('this is after team is created', context.params);
+    await context.app.service('users').patch(user._id, {
+      activeTeamId:  team._id,
+    });
+
     return context;
   };
 };
