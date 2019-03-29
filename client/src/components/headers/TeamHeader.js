@@ -63,16 +63,19 @@ class TeamHeader extends React.Component {
     const { teamName } = this.props;
 
     return (
-      <div className="d-flex justify-content-center mb-4">
-        <ButtonDropdown color="bg-white" isOpen={dropdownOpen} toggle={this.toggle}>
-          <DropdownToggle caret>{ teamName }</DropdownToggle>
-          <DropdownMenu>
-            {this.state.teams && this.state.teams.map((team, i) => <DropdownItem key={i} onClick={this.props.teamChange} value={team._id}>{team.name}</DropdownItem>)}
-            <DropdownItem onClick={this.toggleModal}>Create Team</DropdownItem>
-          </DropdownMenu>
-        </ButtonDropdown>
-        <CreateTeamModal activeUser={this.props.activeUser} modalState={this.state.modal} toggle={this.toggleModal}/>
+      <div className="teamDropDown sticky-top">
+        <div className="d-flex justify-content-center mb-4 dropDown">
+          <ButtonDropdown className="switchTeamBtn" isOpen={dropdownOpen} toggle={this.toggle}>
+            <DropdownToggle caret>{ teamName }</DropdownToggle>
+            <DropdownMenu>
+              {this.state.teams && this.state.teams.map((team, i) => <DropdownItem key={i} onClick={this.props.teamChange} value={team._id}>{team.name}</DropdownItem>)}
+              <DropdownItem onClick={this.toggleModal}>Create Team</DropdownItem>
+            </DropdownMenu>
+          </ButtonDropdown>
+          <CreateTeamModal activeUser={this.props.activeUser} modalState={this.state.modal} toggle={this.toggleModal}/>
+        </div>
       </div>
+      
     );
   }
 }

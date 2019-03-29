@@ -4,7 +4,9 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-  InputGroup
+  InputGroup,
+  Input,
+  Button
 } from "reactstrap";
 import { fc } from '../../feathersClient';
 
@@ -29,9 +31,9 @@ class CreateTeam extends Component {
           Please feel free to create a team or wait until someone else adds you to their team!
         </h4>
         <hr />
-        <button className="btn btn-lg btn-info" onClick={this.toggle}>
+        <Button className="teamCreateBtn" onClick={this.toggle}>
           Create Team
-        </button>
+        </Button>
         </div>
         <Modal isOpen={this.state.modal} toggle={this.toggle}>
           <ModalHeader toggle={this.toggle}>
@@ -39,20 +41,21 @@ class CreateTeam extends Component {
           </ModalHeader>
           <ModalBody>
             <InputGroup>
-              <input
+              <Input
                 value={this.props.teamName}
                 onChange={this.props.teamNameInput}
                 name="teamInput"
                 type="text"
                 placeholder="Team name"
+                className="firstCreateTeamInput"
               />
             </InputGroup>
           </ModalBody>
           <ModalFooter>
-            <button className="btn btn-primary" onClick={this.props.teamCreate}>
+            <Button className="teamCreateBtn" onClick={this.props.teamCreate}>
               Create Team
-            </button>
-            <button className="btn btn-secondary" onClick={this.toggle}>Cancel</button>
+            </Button>
+            <Button className="cancelBtn" onClick={this.toggle}>Cancel</Button>
           </ModalFooter>
         </Modal>
       </div>
