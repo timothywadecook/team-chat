@@ -17,7 +17,7 @@ class TeamPage extends React.Component {
     memberConvos: [],
     customerConvos: [],
     messageView: false,
-    activeConversation: {},
+    activeConversation: null,
     activeConvoId: '',
     groupName: "",
     groupModal: false,
@@ -305,7 +305,7 @@ class TeamPage extends React.Component {
           {this.state.customerConvos.length > 0 ? (
             this.state.customerConvos.map(convo => <TeamListItem key={convo._id} activeUserId={this.props.activeUser._id} openConversation={this.openConversation} status={convo.status} {...convo} />
             )
-          ) : (<h6 className="listItem">No Customer Conversations Exist</h6>)
+          ) : (<h6 className="listItem">{null}</h6>)
           }
             </div>
         </div>
