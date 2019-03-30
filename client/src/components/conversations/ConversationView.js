@@ -2,6 +2,7 @@ import React from 'react';
 import MessagePage from './MessagePage';
 import { fc } from '../../feathersClient';
 import { Nav, Jumbotron } from "reactstrap";
+import { userInfo } from 'os';
 
 class ConversationView extends React.Component {
 
@@ -18,10 +19,18 @@ class ConversationView extends React.Component {
         <MessagePage convoType={conversation.type} {...this.props}/>
       </div>)
       :
-      (<Jumbotron className="viewConvoJumbo">
-        <p className="lead">Click on a convo to view</p>
-      </Jumbotron>);
+      (<div className="col-8 pl-0 pr-0" id='conversation-view'>
+      <Nav className="navbar bg-light d-flex justify-content-center sticky-top">
+        <span className="navbar-brand" href="#">{"Welcome, " + this.props.activeUser.name}</span>
+      </Nav>
+      <MessagePage {...this.props}/>
+      </div>);
   }
 }
+
+
+{/* <Jumbotron className="viewConvoJumbo">
+        <p className="lead">Click on a convo to view</p>
+</Jumbotron> */}
 
 export default ConversationView;

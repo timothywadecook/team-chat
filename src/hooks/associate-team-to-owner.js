@@ -3,11 +3,9 @@ module.exports = function () {
     const team = context.result;
     const user = context.params.user;
 
-    let addedTeamIds = user.teamIds.concat(team._id);
+    // let addedTeamIds = user.teamIds.concat(team._id);
 
-    await context.app.service('users').patch(user._id, {
-      teamIds: addedTeamIds
-    });
+    await context.app.service('users').patch(user._id, {$push: {teamIds: team._id }});
 
     return context;
   };

@@ -47,6 +47,10 @@ class TeamHeader extends React.Component {
     console.log(teamNames);
     this.setState({teams: teamNames});
   }
+  
+  logout = () => {
+    fc.logout();
+  }
 
   toggle = () => {
     this.setState({
@@ -70,6 +74,7 @@ class TeamHeader extends React.Component {
             <DropdownMenu>
               {this.state.teams && this.state.teams.map((team, i) => <DropdownItem key={i} onClick={this.props.teamChange} value={team._id}>{team.name}</DropdownItem>)}
               <DropdownItem onClick={this.toggleModal}>Create Team</DropdownItem>
+              <DropdownItem onClick={this.logout}>Logout</DropdownItem>
             </DropdownMenu>
           </ButtonDropdown>
           <CreateTeamModal activeUser={this.props.activeUser} modalState={this.state.modal} toggle={this.toggleModal}/>

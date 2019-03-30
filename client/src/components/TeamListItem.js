@@ -3,9 +3,10 @@ import React from 'react';
 
 // props.status[props.activeUserId]  {props.status[props.activeUserId] + 
 const TeamListItem = props => {
+  const status = props.status[props.activeUserId];
   return (
     <div className="border teamListItem slide-in-bck-center" id={props._id} onClick={props.openConversation}>
-      <i className='material-icons notifyDot' style={{ fontSize: '20px', color: '#17ffb3' }}>
+      <i className={'material-icons notifyDot ' + status} style={{ fontSize: '20px'}}>
         fiber_manual_record
       </i>
       <h5 className='listName'>{props.name}</h5>

@@ -13,7 +13,7 @@ module.exports = {
     find: [],
     get: [],
     create: [
-      hooks.associateCurrentUser({ as: 'ownerId' }),
+      hooks.associateCurrentUser({ as: 'ownerId' }), // as 'user'??
       addTeamOwnerIdToTeam(),
     ],
     update: [],

@@ -18,6 +18,23 @@ body {
   width: 100%;
 }
 
+// 
+
+.notifyDot {
+  color: transparent
+}
+
+.unread {
+  color:#17ffb3;
+}
+.unreplied {
+  color: rgba(0, 0, 0, 0.33);
+}
+.replied {
+  color: transparent;
+}
+
+
 .teamCreateBtn,
 .btn-secondary {
   background-color: #41546d;
@@ -215,7 +232,7 @@ h6 {
 
 .message-sender {
   font-size: 15px;
-  color: rgba(0, 0, 0, 0.5);
+  color: rgba(0, 0, 0, 0.33);
 }
 
 .senderName {

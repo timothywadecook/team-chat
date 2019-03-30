@@ -289,19 +289,19 @@ class TeamPage extends React.Component {
             <div>
             <GroupHeader addGroup={this.addGroup} value={this.state.groupName} modalStatus={this.state.groupModal} groupNameHandler={this.groupNameChange} toggleModal={this.toggleGroupModal} {...this.props} />
             {this.state.groupConvos.length > 0 ? (
-                this.state.groupConvos.map(convo => <TeamListItem key={convo._id} openConversation={this.openConversation} {...convo} />
+                this.state.groupConvos.map(convo => <TeamListItem key={convo._id} activeUserId={this.props.activeUser._id} openConversation={this.openConversation} {...convo} />
                 )
               ) : ( <h6 className='listItem'>No Group Conversations Exist</h6>)
             }
             <MemberHeader addMember={this.addMember} modalStatus={this.state.userModal} emailChange={this.emailChange} value={this.state.userEmail} {...this.props} toggleModal={this.toggleEmail} />
             {this.state.memberConvos.length > 0 ? (
               this.state.memberConvos.map(convo => (
-                <TeamListItem key={convo._id} openConversation={this.openConversation} {...convo} />
+                <TeamListItem key={convo._id} activeUserId={this.props.activeUser._id} openConversation={this.openConversation} {...convo} />
               ))
             ) : (
               <h3 className='listItem'>No Member Conversations Exist</h3>
             )}
-          <CustomerHeader addMember={this.addMember} {...this.props} />
+          <CustomerHeader addSMS={this.addSMS} {...this.props} />
           {this.state.customerConvos.length > 0 ? (
             this.state.customerConvos.map(convo => <TeamListItem key={convo._id} activeUserId={this.props.activeUser._id} openConversation={this.openConversation} status={convo.status} {...convo} />
             )
