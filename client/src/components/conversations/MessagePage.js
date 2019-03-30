@@ -20,10 +20,9 @@ class MessagePage extends React.Component {
         body: this.state.messageInput,
         senderId: this.props.activeUser._id,
         senderName: this.props.activeUser.name,
-        conversationId: this.props.convoId
+        conversationId: this.props.conversationId
       })
       .then((data) => {
-        // this.props.getMessages();
         this.setState({ messageInput: "" });
       });
   };

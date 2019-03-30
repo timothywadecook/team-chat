@@ -233,7 +233,8 @@ class TeamPage extends React.Component {
         // console.log('group convos add group', groupConvos.data)
         this.setState({
           groupConvos: groupConvos.data,
-          groupModal: false
+          groupModal: false,
+          groupName: ""
         });
       });
   }
@@ -246,9 +247,21 @@ class TeamPage extends React.Component {
   addMember = e => {
     e.preventDefault();
     // console.log("add member button clicked")
-    fc.service('teams').patch(this.props.activeTeamId, { $push: { invitedEmails: this.state.userEmail } });
-    this.setState({ userModal: false });
-  }
+    fc.service("users").find({query: {email: this.state.userEmail}})
+      .then(user => {
+        if(user.data[0] && user.data[0].email === this.state.userEmail){
+          console.log("user was found");
+          fc.service("users").patch(user.data[0]._id, {$push: {teamIds: this.props.activeTeamId}})
+            .then(user => {
+              this.getData(this.props.activeTeamId, user);
+            });
+        } else {
+          console.log("user was not found");
+          fc.service('teams').patch(this.props.activeTeamId, { $push: { invitedEmails: this.state.userEmail } });
+        }
+      });
+    this.setState({userModal: false});
+  };
 
   emailChange = (event) => {
     this.setState({ userEmail: event.target.value });
@@ -270,21 +283,22 @@ class TeamPage extends React.Component {
 
   render() {
     return (
-      <div className="row" id="team-page" >
-        <div className="col-4 flex-column justify-content-center pt-5 pr-0 border-right">
-          <TeamHeader teamName={this.state.teamName} activeUser={this.props.activeUser} teamChange={this.props.teamChange} />
-          <GroupHeader addGroup={this.addGroup} value={this.state.groupName} modalStatus={this.state.groupModal} groupNameHandler={this.groupNameChange} toggleModal={this.toggleGroupModal} {...this.props} />
-          {this.state.groupConvos.length > 0 ? (
-            this.state.groupConvos.map(convo => <TeamListItem key={convo._id} activeUserId={this.props.activeUser._id}  openConversation={this.openConversation} status={convo.status} {...convo} />
-            )
-          ) : (<h6 className='listItem'>No Group Conversations Exist</h6>)
-          }
-          <MemberHeader addMember={this.addMember} modalStatus={this.state.userModal} emailChange={this.emailChange} value={this.state.userEmail} {...this.props} toggleModal={this.toggleEmail} />
-          {this.state.memberConvos.length > 0 ? (
-            this.state.memberConvos.map(convo => (
-              <TeamListItem key={convo._id}  activeUserId={this.props.activeUser._id}  openConversation={this.openConversation} status={convo.status} {...convo} />
-            ))
-          ) : (
+      <div className="row" id="team-page">
+        <div className="col-4 flex-column justify-content-center border-right convoView">
+        <TeamHeader teamName={this.state.teamName} activeUser={this.props.activeUser} teamChange={this.props.teamChange}/>
+            <div>
+            <GroupHeader addGroup={this.addGroup} value={this.state.groupName} modalStatus={this.state.groupModal} groupNameHandler={this.groupNameChange} toggleModal={this.toggleGroupModal} {...this.props} />
+            {this.state.groupConvos.length > 0 ? (
+                this.state.groupConvos.map(convo => <TeamListItem key={convo._id} openConversation={this.openConversation} {...convo} />
+                )
+              ) : ( <h6 className='listItem'>No Group Conversations Exist</h6>)
+            }
+            <MemberHeader addMember={this.addMember} modalStatus={this.state.userModal} emailChange={this.emailChange} value={this.state.userEmail} {...this.props} toggleModal={this.toggleEmail} />
+            {this.state.memberConvos.length > 0 ? (
+              this.state.memberConvos.map(convo => (
+                <TeamListItem key={convo._id} openConversation={this.openConversation} {...convo} />
+              ))
+            ) : (
               <h3 className='listItem'>No Member Conversations Exist</h3>
             )}
           <CustomerHeader addMember={this.addMember} {...this.props} />
@@ -293,6 +307,7 @@ class TeamPage extends React.Component {
             )
           ) : (<h6 className="listItem">No Customer Conversations Exist</h6>)
           }
+            </div>
         </div>
         <ConversationView getMessages={this.updateMessagesForActiveConversation} messages={this.state.messages} activeUser={this.props.activeUser} conversationId={this.state.activeConvoId} conversation={this.state.activeConversation} />
       </div>

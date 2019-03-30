@@ -47,6 +47,7 @@ class CreateTeamModal extends React.Component {
         })
         .then((response) => {
           console.log(data);
+            this.setState({teamName: ""});
             this.props.toggle();
         })
     });

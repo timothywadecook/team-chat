@@ -1,6 +1,6 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 
-const processOutgoing = require('../../hooks/process-outgoing');
+// const processOutgoing = require('../../hooks/process-outgoing');
 
 const setPreview = require('../../hooks/set-preview');
 
@@ -9,12 +9,7 @@ const updateConvoStatuses4TeamOnNewMessage = require('../../hooks/update-convo-s
 module.exports = {
   before: {
     all: [ authenticate('jwt') ],
-    find: [
-      // function(context) {
-      //   context.params.query = { $limit: 50 };
-      //   return context;
-      // }
-    ],
+    find: [],
     get: [],
     create: [],
     update: [],

@@ -1,18 +1,19 @@
 import React, { Component } from "react";
 import {
-  Container,
-  Button,
   Modal,
   ModalHeader,
   ModalBody,
   ModalFooter,
+  InputGroup,
   Input,
-  InputGroup
+  Button
 } from "reactstrap";
+import { fc } from '../../feathersClient';
 
 class CreateTeam extends Component {
   state = {
-    modal: false
+    modal: false,
+    user: fc.get('user')
   };
 
   toggle = () => {
@@ -23,14 +24,17 @@ class CreateTeam extends Component {
 
   render() {
     return (
-      <Container>
-        <h1>
-          Please feel free to create a team or wait until someone else adds you
-          to their team!
-        </h1>
-        <Button color="info" onClick={this.toggle}>
+      <div className="vw-100 vh-100 flex-center flex-column">
+        <div className="jumbotron w-50 text-center">
+        <h1 className="display-4">Welcome <span role="img" aria-label="welcome">&#x1f44b;</span></h1>
+        <h4 className="">
+          Please feel free to create a team or wait until someone else adds you to their team!
+        </h4>
+        <hr />
+        <Button className="teamCreateBtn" onClick={this.toggle}>
           Create Team
         </Button>
+        </div>
         <Modal isOpen={this.state.modal} toggle={this.toggle}>
           <ModalHeader toggle={this.toggle}>
             Please Enter a Team Name
@@ -42,20 +46,19 @@ class CreateTeam extends Component {
                 onChange={this.props.teamNameInput}
                 name="teamInput"
                 type="text"
-                label="Team Name"
+                placeholder="Team name"
+                className="firstCreateTeamInput"
               />
             </InputGroup>
           </ModalBody>
           <ModalFooter>
-            <Button color="primary" onClick={this.props.teamCreate}>
+            <Button className="teamCreateBtn" onClick={this.props.teamCreate}>
               Create Team
             </Button>
-            <Button color="secondary" onClick={this.toggle}>
-              Cancel
-            </Button>
+            <Button className="cancelBtn" onClick={this.toggle}>Cancel</Button>
           </ModalFooter>
         </Modal>
-      </Container>
+      </div>
     );
   }
 }
