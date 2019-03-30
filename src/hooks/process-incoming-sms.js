@@ -22,9 +22,9 @@ module.exports = function (options = {}) {
     const team = await context.app.service('teams').find({query: {smsNumber: to}})
     const teamId=team.data[0]._id;
 
-    // Get the conversationId based on the 'from' number
-    const convo = await context.app.service('conversations').find({query: {contacts: from}})
-    console.log('convo.data[0]', convo.data[0])
+    // Get the conversationId based on the 'from' number and teamId
+    const convo = await context.app.service('conversations').find({query: {teamId: teamId, contacts: from}})
+    
     // if conversation already exists then just create a message with that convoId
     if (convo.data[0]) {
       context.app.service('messages').create({
@@ -32,13 +32,13 @@ module.exports = function (options = {}) {
         body: text,
         conversationId: convo.data[0]._id,
       })
-      // set the activeOutgoing channel as "from" for the associated conversation
+        // set the activeOutgoing channel on the conversation
         await context.app.service('conversations').patch(convo.data[0]._id, {activeOutgoing: from})
-    } else { // if the conversation doesn't exist. create new conversation and new message
-        
+    
+    // if the conversation doesn't exist. create new conversation and new message
+    } else { 
         const users = await context.app.service('users').find({query: {teamIds: teamId}});
         const userIds = users.data.map(user => user._id);
-        console.log('create convo input name, teamId, userIds, preview, contacts', from, teamId, userIds, text.substring(0,30))
         const newConvo = await context.app.service('conversations').create({
           name: from,
           type: "incoming",
@@ -46,7 +46,8 @@ module.exports = function (options = {}) {
           userIds: userIds,
           preview: text.substring(0,30),
           activeOutgoing: from,
-          contacts: [from]
+          contacts: [from],
+          status: {}
         })
         context.app.service('messages').create({
           senderName: from,

@@ -26,7 +26,7 @@ module.exports = function (options = {}) {
         from: teamSms,
         to: activeOutgoing
       })
-      .then(message => console.log(message.sid));
+      .then(message => console.log('outgoing message deployed', message.sid));
     }
 
 

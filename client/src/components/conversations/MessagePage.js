@@ -5,8 +5,7 @@ import { fc } from "../../feathersClient";
 
 class MessagePage extends React.Component {
   state = {
-    messages: [],
-    messageInput: ""
+    messageInput: "",
   };
 
   changeHandler = event => {
@@ -15,6 +14,7 @@ class MessagePage extends React.Component {
 
   clickHandler = event => {
     event.preventDefault();
+    console.log('this should be only once. in MessagePage')
     fc.service("messages")
       .create({
         body: this.state.messageInput,
@@ -23,52 +23,15 @@ class MessagePage extends React.Component {
         conversationId: this.props.convoId
       })
       .then((data) => {
-          let preview = data.body;
-          if(preview.length > 30){
-            preview = preview.substring(0, 30);
-          }
-          fc.service("conversations").patch(this.props.convoId, {preview: preview})
-        this.getMessages();
-        this.setState({messageInput: ""});
+        // this.props.getMessages();
+        this.setState({ messageInput: "" });
       });
   };
-
-  addMessageToConversation = (message) => {
-    if(this.props.convoId === message.conversationId) {
-      this.setState({ messages: [...this.state.messages, message] });
-    }
-  }
-
-  componentDidMount() {
-    this.getMessages();
-    // listen for new messages
-    fc.service('messages').on('created', this.addMessageToConversation);
-  }
-
-  componentDidUpdate(prevProps){
-    if(this.props.convoId !== prevProps.convoId){
-        this.getMessages();
-    }
-  }
-
-  getMessages() {
-    fc.service("messages")
-      .find({ query: { 
-        $limit: 50,
-        $sort: {
-          createdAt: -1
-        },
-        conversationId: this.props.convoId 
-      } })
-      .then(messages => {
-        this.setState({ messages: messages.data.reverse()});
-      });
-  }
 
   render() {
     return (
       <React.Fragment>
-        <MessageBoard convoType={this.props.convoType} messages={this.state.messages} activeUser={this.props.activeUser}/>
+        <MessageBoard convoType={this.props.convoType} messages={this.props.messages} activeUser={this.props.activeUser} />
         <div className="px-4 border-top d-flex pb-4 bg-light conversation-view-footer fixed-bottom">
           <MessageBar
             changeHandler={this.changeHandler}

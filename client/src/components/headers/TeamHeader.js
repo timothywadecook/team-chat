@@ -29,7 +29,7 @@ class TeamHeader extends React.Component {
     for(let i = 0; i < this.props.activeUser.teamIds.length; i++){
       fc.service("teams").find(this.props.activeUser.teamIds[i])
         .then(function(team){
-          console.log(team);
+          console.log('teams this user is on', team);
           teamNames.push(team.data[i]);
         });
     }

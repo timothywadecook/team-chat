@@ -94,7 +94,6 @@ class App extends Component {
             )
           })
           .then((response) => { // set the activeTeamId to the new team
-            console.log(response);
             this.setState({activeTeamId: data._id});
           })
       });
