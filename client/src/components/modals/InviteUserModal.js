@@ -26,10 +26,10 @@ class InviteUserModal extends React.Component {
             </InputGroup>
           </ModalBody>
           <ModalFooter>
-            <Button color="primary" onClick={this.props.addMember}>
+            <Button color="secondary" onClick={this.props.addMember}>
                 Invite User
             </Button>
-            <Button color="secondary" onClick={this.props.toggle}>
+            <Button className="cancelBtn" onClick={this.props.toggle}>
               Cancel
             </Button>
           </ModalFooter>
