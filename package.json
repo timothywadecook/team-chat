@@ -23,11 +23,11 @@
     "npm": ">= 3.0.0"
   },
   "scripts": {
-    "test": "npm run eslint && NODE_ENV= npm run mocha",
-    "eslint": "eslint src/. test/. --config .eslintrc.json",
+    "test": "NODE_ENV= npm run mocha",
     "dev": "nodemon src/",
     "start": "node src/",
-    "mocha": "mocha test/ --recursive --exit",
+    "mocha": "npm run clean && NODE_ENV=test mocha test/ --recursive --exit",
+    "clean": "shx rm -rf test/data/",
     "install": "cd client && npm install"
   },
   "dependencies": {
@@ -55,9 +55,12 @@
   },
   "devDependencies": {
     "bootstrap": "^4.3.1",
+    "chai": "^4.2.0",
+    "feathers-memory": "^3.0.2",
     "mocha": "^5.2.0",
     "nodemon": "^1.18.10",
     "request": "^2.88.0",
-    "request-promise": "^4.2.4"
+    "request-promise": "^4.2.4",
+    "shx": "^0.3.2"
   }
 }

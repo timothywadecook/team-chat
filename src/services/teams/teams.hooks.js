@@ -1,7 +1,11 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
-const hooks = require('feathers-authentication-hooks')
+const hooks = require('feathers-authentication-hooks');
 
 const setActiveTeamOnUser = require('../../hooks/set-active-team-on-user');
+const associateTeamToOwner = require('../../hooks/associate-team-to-owner');
+const addTeamOwnerIdToTeam = require('../../hooks/add-team-owner-id-to-team');
+
+const initializeConversationForTeamCreation = require('../../hooks/initialize-conversation-for-team-creation');
 
 module.exports = {
   before: {
@@ -9,8 +13,8 @@ module.exports = {
     find: [],
     get: [],
     create: [
-      // add the currently authenticated user to the data as ownerId
-      hooks.associateCurrentUser({ as: 'ownerId' })
+      hooks.associateCurrentUser({ as: 'ownerId' }),
+      addTeamOwnerIdToTeam(),
     ],
     update: [],
     patch: [],
@@ -21,7 +25,11 @@ module.exports = {
     all: [],
     find: [],
     get: [],
-    create: [setActiveTeamOnUser()],
+    create: [
+      setActiveTeamOnUser(),
+      associateTeamToOwner(),
+      initializeConversationForTeamCreation()
+    ],
     update: [],
     patch: [],
     remove: []

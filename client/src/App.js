@@ -67,38 +67,13 @@ class App extends Component {
       error: null,
     });
   };
+
   teamCreate = e => {
-    // create the team given the input name and set the active user as owner
-    fc.service('teams')
-      .create({
+    fc.service('teams').create({
         name: this.state.teamInput,
       })
       .then(data => {
-        fc.service('users')
-          .patch(this.state.activeUser._id, {
-            // add new team to this User and set activeTeam in db
-            teamIds: data._id,
-            activeTeamId: data._id,
-          })
-          .then(() => {
-            // create default General converation
-            fc.service('conversations').create({
-              teamId: data._id,
-              type: 'group',
-              name: 'General',
-              userIds: this.state.activeUser._id,
-            });
-            fc.service('conversations').create({
-              teamId: data._id,
-              type: 'member',
-              name: `${this.state.activeUser.name} (you)`,
-              userIds: this.state.activeUser._id,
-            });
-          })
-          .then(response => {
-            // set the activeTeamId to the new team
-            this.setState({ activeTeamId: data._id });
-          });
+        this.setState({ activeTeamId: data._id });
       });
   };
 
