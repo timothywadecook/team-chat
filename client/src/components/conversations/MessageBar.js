@@ -2,7 +2,7 @@ import React from "react";
 import {Form, Input, FormGroup, Button} from "reactstrap";
 
 const MessageBar = props => (
-  <Form className="sendMessage">
+  <Form className="sendMessage" inline={true}>
     <FormGroup> 
       <Input className="sendInput" onChange={props.changeHandler} value={props.value} type="text"/>
       <Button color="secondary" className="sendBtn" onClick={props.clickHandler} type="submit">Send</Button>

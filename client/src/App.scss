@@ -42,7 +42,7 @@ body {
 }
 
 .teamDropDown {
-  padding-top: 10px;
+  padding-top: 15px;
   height: 70px;
   width: 100%;
   background: #fff;
@@ -58,6 +58,22 @@ h6 {
   margin: 5px;
   background-color: #f8f8f8;
   border-radius: 10px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.listName,
+.navbar-brand {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.previewText {
+  font-size: 12px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .convoView {
@@ -76,7 +92,7 @@ h6 {
 }
 
 .sendInput {
-  width: 90%;
+  width: 90% !important;
   float: left;
   border-radius: 20px;
 }
@@ -475,5 +491,45 @@ h6 {
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
     opacity: 1;
+  }
+}
+
+@media only screen and (max-width: 1150px) {
+  .sendInput {
+    width: 80% !important;
+    float: left;
+    border-radius: 20px;
+  }
+
+  .messageBubble {
+    margin: 10px;
+    width: 60%;
+    border-radius: 20px;
+  }
+
+  .listName {
+    font-size: 18px;
+  }
+
+  .previewText {
+    font-size: 12px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  h6 {
+    font-size: 20px;
+  }
+
+  .navbar-brand {
+    font-size: 20px;
+  }
+
+  .dropdown-item {
+    max-width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
