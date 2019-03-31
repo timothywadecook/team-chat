@@ -28,9 +28,4 @@ class ConversationView extends React.Component {
   }
 }
 
-
-{/* <Jumbotron className="viewConvoJumbo">
-        <p className="lead">Click on a convo to view</p>
-</Jumbotron> */}
-
 export default ConversationView;
