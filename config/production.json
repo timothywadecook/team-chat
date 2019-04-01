@@ -1,4 +1,4 @@
 {
-  "host": "team-chat-app.feathersjs.com",
+  "host": "https://teamchat-tepa.herokuapp.com",
   "port": "PORT"
 }
