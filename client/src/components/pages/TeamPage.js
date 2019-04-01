@@ -13,6 +13,7 @@ class TeamPage extends React.Component {
     messages: [],
     teamMembers: [],
     teamName: '',
+    teamSMS: "",
     groupConvos: [],
     memberConvos: [],
     customerConvos: [],
@@ -23,6 +24,7 @@ class TeamPage extends React.Component {
     groupModal: false,
     userEmail: "",
     userModal: false,
+    connectSMSModal: false
   };
 
   // When a conversation is opened change unread to unreplied. 
@@ -61,9 +63,9 @@ class TeamPage extends React.Component {
     const teamMembers = await fc.service('users').find({query: {teamIds: teamId}});
     return teamMembers.data;
   } // done
-  getTeamName = async (teamId) => {
+  getTeam = async (teamId) => {
     const team = await fc.service('teams').get(teamId);
-    return team.name;
+    return team;
   } // done
   removeMyNameFromDisplayedMemberConvoName = (memberConvos,user) => {
     for (let i=1; i<memberConvos.length; i++) {
@@ -130,7 +132,8 @@ class TeamPage extends React.Component {
 
 
   getData = async (teamId, user) => {
-    const teamName = await this.getTeamName(teamId);
+    const team = await this.getTeam(teamId);
+    const teamName = team.name;
     let teamMembers = await this.getTeamMembers(teamId);
     let groupConvos = await this.getGroupConvos(teamId, user);
     let memberConvos = await this.getMemberConvos(teamId, user);
@@ -154,6 +157,7 @@ class TeamPage extends React.Component {
     this.setState({
       teamMembers: teamMembers,
       teamName: teamName,
+      teamSMS: team.smsNumber || "",
       groupConvos: groupConvos,
       memberConvos: memberConvos,
       customerConvos: customerConvos.data || []
@@ -236,6 +240,11 @@ class TeamPage extends React.Component {
     })
   }
 
+  toggleConnectSMSModal = () => {
+    // e.preventDefault();
+    this.setState({connectSMSModal: !this.state.connectSMSModal})
+  };
+
   toggleGroupModal = (event) => {
     event.preventDefault();
     this.setState({ groupModal: !this.state.groupModal });
@@ -298,7 +307,7 @@ class TeamPage extends React.Component {
             ) : (
               <h3 className='listItem'>{null}</h3>
             )}
-          <CustomerHeader addSMS={this.addSMS} {...this.props} />
+          <CustomerHeader teamSMS={this.state.teamSMS} activeTeamId={this.props.activeTeamId}  modalState={this.state.connectSMSModal} toggle={this.toggleConnectSMSModal} {...this.props} />
           {this.state.customerConvos.length > 0 ? (
             this.state.customerConvos.map(convo => <TeamListItem key={convo._id} activeConvoId={this.state.activeConvoId}  activeUserId={this.props.activeUser._id} openConversation={this.openConversation} status={convo.status} {...convo} />
             )

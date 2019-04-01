@@ -10,22 +10,22 @@ import {
   InputGroup
 } from "reactstrap";
 
-class CreateTeamModal extends React.Component {
+class ConnectSMSModal extends React.Component {
   state = {
-    teamName: ""
+    smsNumber: ""
   };
 
   changeHandler =(event) => {
-    this.setState({teamName: event.target.value});
+    this.setState({smsNumber: event.target.value});
   }
 
-  createTeam = (e) => {
+  connectSMS = (e) => {
     e.preventDefault();
-    fc.service('teams').create({ // create the team given the input name
-        name: this.state.teamName,
+    fc.service('teams').patch(this.props.activeTeamId, { // assign this sms number as the team's smsNumber 
+        smsNumber: this.state.smsNumber,
     })
     .then((response) => {
-        this.setState({teamName: ""});
+        this.setState({smsNumber: ""});
         this.props.toggle();
     })
 }
@@ -38,15 +38,15 @@ class CreateTeamModal extends React.Component {
           toggle={this.props.toggle}
           className={this.props.className}
         >
-          <ModalHeader toggle={this.props.toggle}>Create a New Team</ModalHeader>
+          <ModalHeader toggle={this.props.toggle}>Connect Customer SMS</ModalHeader>
           <ModalBody>
             <InputGroup>
-              <Input placeholder="Enter New Team Name" value={this.state.teamName} onChange={this.changeHandler}/>
+              <Input placeholder="Enter your FrontDor SMS number. Format: +17708480092" value={this.state.smsNumber} onChange={this.changeHandler}/>
             </InputGroup>
           </ModalBody>
           <ModalFooter>
-            <Button color="secondary" onClick={this.createTeam}>
-                Create Team
+            <Button color="secondary" onClick={this.connectSMS}>
+                Connect
             </Button>
             <Button color="cancelBtn" onClick={this.props.toggle}>
               Cancel
@@ -58,4 +58,4 @@ class CreateTeamModal extends React.Component {
   }
 }
 
-export default CreateTeamModal;
+export default ConnectSMSModal;
