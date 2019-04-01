@@ -115,7 +115,7 @@ body {
 }
 
 .dropdown-toggle{
-  max-width: 95px;
+  max-width: 250px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -623,5 +623,20 @@ h6 {
 
   .navbar-brand {
     font-size: 20px;
+  }
+}
+
+
+/* On screens that are 992px or less, set the background color to blue */
+@media screen and (max-width: 992px) {
+  .dropdown-toggle{
+    width: 200px;
+  }
+}
+
+/* On screens that are 600px or less, set the background color to olive */
+@media screen and (max-width: 600px) {
+  .dropdown-toggle{
+    width: 150px;
   }
 }

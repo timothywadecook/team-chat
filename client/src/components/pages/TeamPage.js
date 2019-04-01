@@ -218,17 +218,19 @@ class TeamPage extends React.Component {
 
   addGroup = async (e) => {
     e.preventDefault();
+    const userIds = this.state.teamMembers.map(member => member._id);
+    console.log('userIds on new group', userIds)
     await fc.service('conversations').create({
         name: this.state.groupName,
         type: 'group',
         teamId: this.props.activeTeamId,
         status: {[this.props.activeUser._id]: "replied" },
-        userIds: this.state.teamMembers.map(member => member._id)
+        userIds: userIds
       });
-    const updatedGroupConversations = await this.getGroupConvos(this.props.activeTeamId, this.props.activeUser);
+    // const updatedGroupConversations = await this.getGroupConvos(this.props.activeTeamId, this.props.activeUser);
 
     this.setState({
-      groupConvos: updatedGroupConversations,
+      // groupConvos: updatedGroupConversations,
       groupModal: false,
       groupName: ""
     })
