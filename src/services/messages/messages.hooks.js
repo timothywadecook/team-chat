@@ -1,6 +1,6 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 
-const processOutgoing = require('../../hooks/process-outgoing');
+//const processOutgoing = require('../../hooks/process-outgoing');
 
 const setPreview = require('../../hooks/set-preview');
 
@@ -26,7 +26,11 @@ module.exports = {
     all: [],
     find: [],
     get: [],
-    create: [processOutgoing(), setPreview(), updateConvoStatuses4TeamOnNewMessage()],
+    create: [
+      //processOutgoing(),
+      setPreview(),
+      updateConvoStatuses4TeamOnNewMessage()
+    ],
     update: [],
     patch: [],
     remove: []

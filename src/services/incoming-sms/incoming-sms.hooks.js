@@ -1,13 +1,15 @@
 
 
-const processIncomingSms = require('../../hooks/process-incoming-sms');
+//const processIncomingSms = require('../../hooks/process-incoming-sms');
 
 module.exports = {
   before: {
     all: [],
     find: [],
     get: [],
-    create: [processIncomingSms()],
+    create: [
+      //processIncomingSms()
+    ],
     update: [],
     patch: [],
     remove: []
