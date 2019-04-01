@@ -1,10 +1,13 @@
 import React from "react";
+import {Form, Input, FormGroup, Button} from "reactstrap";
 
 const MessageBar = props => (
-  <form className="form-inline">
-    <input className="" onChange={props.changeHandler} value={props.value}/>
-    <button className="" onClick={props.clickHandler}>Send</button>
-  </form>
+  <Form className="sendMessage" inline={true}>
+    <FormGroup> 
+      <Input className="sendInput" onChange={props.changeHandler} value={props.value} type="text"/>
+      <Button color="secondary" className="sendBtn" onClick={props.clickHandler} type="submit">Send</Button>
+    </FormGroup>
+  </Form>
 );
 
 export default MessageBar;

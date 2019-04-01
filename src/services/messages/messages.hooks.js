@@ -9,12 +9,7 @@ const updateConvoStatuses4TeamOnNewMessage = require('../../hooks/update-convo-s
 module.exports = {
   before: {
     all: [ authenticate('jwt') ],
-    find: [
-      // function(context) {
-      //   context.params.query = { $limit: 50 };
-      //   return context;
-      // }
-    ],
+    find: [],
     get: [],
     create: [],
     update: [],

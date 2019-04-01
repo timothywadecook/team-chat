@@ -20,36 +20,14 @@ class CreateTeamModal extends React.Component {
   }
 
   createTeam = (e) => {
-    fc.service('teams').create({ // create the team given the input name and set the active user as owner
+    fc.service('teams').create({ // create the team given the input name
         name: this.state.teamName,
-        ownerId: this.props.activeUser._id
     })
-    .then((data) => {
-        fc.service("users").patch(this.props.activeUser._id, {$push: { // add new team to this User and set activeTeam in db
-          teamIds: data._id
-        }}).then(() => { // create default General converation
-          fc.service("conversations").create(
-            {
-              teamId: data._id,
-              type: "group",
-              name: "General",
-              userIds: this.props.activeUser._id
-            },
-          )
-          fc.service("conversations").create(
-            {
-              teamId: data._id,
-              type: "member",
-              name: `${this.props.activeUser.name} (you)`,
-              userIds: this.props.activeUser._id
-            }
-          )
-        })
-        .then((response) => {
-          console.log(data);
-            this.props.toggle();
-        })
-    });
+    .then((response) => {
+      console.log('CreateTeamModal ran create team',response);
+        this.setState({teamName: ""});
+        this.props.toggle();
+    })
 }
 
   render() {
@@ -67,10 +45,10 @@ class CreateTeamModal extends React.Component {
             </InputGroup>
           </ModalBody>
           <ModalFooter>
-            <Button color="primary" onClick={this.createTeam}>
+            <Button color="secondary" onClick={this.createTeam}>
                 Create Team
             </Button>
-            <Button color="secondary" onClick={this.props.toggle}>
+            <Button color="cancelBtn" onClick={this.props.toggle}>
               Cancel
             </Button>
           </ModalFooter>

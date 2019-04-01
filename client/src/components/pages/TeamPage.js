@@ -17,7 +17,7 @@ class TeamPage extends React.Component {
     memberConvos: [],
     customerConvos: [],
     messageView: false,
-    activeConversation: {},
+    activeConversation: null,
     activeConvoId: '',
     groupName: "",
     groupModal: false,
@@ -27,7 +27,7 @@ class TeamPage extends React.Component {
 
   // When a conversation is opened change unread to unreplied. 
   unreadToUnreplied = async () => {
-    const teamId = this.state.activeTeamId;
+    const teamId = this.props.activeTeamId;
     const userId = this.props.activeUser._id;
     // update db 
     let statusPath = `status.${userId}`;
@@ -35,18 +35,19 @@ class TeamPage extends React.Component {
     console.log('activeConvo status',this.state.activeConversation.status)
     if (this.state.activeConversation.status[userId] === "unread") {
       const updatedConvo = await fc.service('conversations').patch(this.state.activeConvoId, { [statusPath] : "unreplied"})
-    // update state with new convos from db 
-    console.log('updatedconvo status', updatedConvo.status)
-    const type = updatedConvo.type;
-    if (type==="member") {const memberConvos = await this.getMemberConvos(teamId, this.props.activeUser); await this.setState({memberConvos})}
-    else if (type==="group") {const groupConvos = await this.getGroupConvos(teamId, this.props.activeUser); console.log('group conversations', groupConvos); await this.setState({groupConvos})}
-    else if (type==="incoming") {const customerConvos = await this.getCustomerConvos(teamId, this.props.activeUser); await this.setState({customerConvos})}
+      // update state with new convos from db 
+      console.log('updatedconvo status', updatedConvo.status)
+      const type = updatedConvo.type;
+      if (type==="member") {const memberConvos = await this.getMemberConvos(teamId, this.props.activeUser); await this.setState({memberConvos})}
+      else if (type==="group") {const groupConvos = await this.getGroupConvos(teamId, this.props.activeUser); console.log('group conversations', groupConvos); await this.setState({groupConvos})}
+      else if (type==="incoming") {const customerConvos = await this.getCustomerConvos(teamId, this.props.activeUser); await this.setState({customerConvos})}
     }
   } // done
   getMemberConvos = async (teamId, user) => { 
     let memberConvos = await fc.service('conversations').find({query: {teamId: teamId, userIds: user._id, type: "member"}});
-    memberConvos = this.removeMyNameFromDisplayedMemberConvoName(memberConvos, user);
-    return memberConvos.data;
+    if (memberConvos.data.length > 0) {memberConvos = await this.removeMyNameFromDisplayedMemberConvoName(memberConvos.data, user);} else {memberConvos = memberConvos.data}
+    console.log('member convos why name not removed? ', memberConvos)
+    return memberConvos;
   } // done
   getGroupConvos = async (teamId, user) => { 
     const groupConvos = await fc.service('conversations').find({query: {teamId: teamId, userIds: user._id, type: "group"}});
@@ -66,12 +67,13 @@ class TeamPage extends React.Component {
   } // done
   removeMyNameFromDisplayedMemberConvoName = (memberConvos,user) => {
     for (let i=1; i<memberConvos.length; i++) {
-      memberConvos[i].name = memberConvos[i].name.replace(user.name, "")
+      console.log('i should see convo name and my name', memberConvos[i].name, user.name)
+      memberConvos[i].name = memberConvos[i].name.replace(user.name, "").trim()
     }
     return memberConvos
   } // done
   createNewPersonalConversation_OnJoinTeam = async (teamId, user) => {
-    const myConvo = await fc.service('conversations').create({teamId: teamId, type: "member", name: user.name + " (you)", userIds: user._id});
+    const myConvo = await fc.service('conversations').create({teamId: teamId, type: "member", name: user.name + " (you)", userIds: user._id, status: {[user._id]: "replied"}});
   } // done
   createNewMember2MemberConversations_OnJoinTeam = async (teamMembers, teamId, user) => {
     for (let i = 0; i < teamMembers.length; i++) {
@@ -80,7 +82,8 @@ class TeamPage extends React.Component {
           name: user.name + ' ' + teamMembers[i].name,
           userIds: [user._id, teamMembers[i]._id],
           type: 'member',
-          teamId: teamId
+          teamId: teamId,
+          status: {[user._id]: "replied"}
         });
       }
     }
@@ -159,13 +162,15 @@ class TeamPage extends React.Component {
   updateStateForNewMessage = async (message) => {
     // pull convos for this message type and update state
     const convo = await fc.service('conversations').get(message.conversationId);
+    console.log('we are listening to new messages and we heard that one, message, convo.type', message, convo.type)
     const convoType = convo.type;
     if (convoType === "member") { const updatedMemberConvos = await this.getMemberConvos(this.props.activeTeamId, this.props.activeUser); this.setState({memberConvos: updatedMemberConvos})}
     else if (convoType === "group") { const updatedGroupConvos = await this.getGroupConvos(this.props.activeTeamId, this.props.activeUser); this.setState({groupConvos: updatedGroupConvos})}
     else if ( convoType === "incoming") {const updatedCustomerConvos = await this.getCustomerConvos(this.props.activeTeamId, this.props.activeUser); this.setState({customerConvos: updatedCustomerConvos})}
     // if convo is current convo then get messages and update state
     if (this.state.activeConvoId === message.conversationId) {
-      await this.setState({messages: [...this.state.messages, message]})
+      // this.setState({messages: [...this.state.messages, message]})
+      this.updateMessagesForActiveConversation();
     }
   } // done
   updateStateForNewConvo = async convo => {
@@ -200,7 +205,9 @@ class TeamPage extends React.Component {
     }
     // if activeConvoId changes then run get messages to update state
     if (this.state.activeConvoId !== prevState.activeConvoId) {
+      // get the messages for the now active conversation
       this.updateMessagesForActiveConversation();
+      // change the status of this active conversation to unreplied if unread
       this.unreadToUnreplied();
     }
   }
@@ -209,33 +216,24 @@ class TeamPage extends React.Component {
     this.setState({ groupName: event.target.value });
   }
 
-  addGroup = (e) => {
+  addGroup = async (e) => {
     e.preventDefault();
-    fc.service('conversations')
-      .create({
+    const userIds = this.state.teamMembers.map(member => member._id);
+    console.log('userIds on new group', userIds)
+    await fc.service('conversations').create({
         name: this.state.groupName,
         type: 'group',
         teamId: this.props.activeTeamId,
         status: {[this.props.activeUser._id]: "replied" },
-        userIds: this.state.teamMembers.map(member => member._id)
-      })
-      .then(async newGroup => {
-        // console.log('this.props', this.props.activeUser.name);
-        const groupConvos = await fc
-          .service('conversations')
-          .find({
-            query: {
-              teamId: this.props.activeTeamId,
-              userId: this.props.activeUser._id,
-              type: 'group',
-            },
-          });
-        // console.log('group convos add group', groupConvos.data)
-        this.setState({
-          groupConvos: groupConvos.data,
-          groupModal: false
-        });
+        userIds: userIds
       });
+    // const updatedGroupConversations = await this.getGroupConvos(this.props.activeTeamId, this.props.activeUser);
+
+    this.setState({
+      // groupConvos: updatedGroupConversations,
+      groupModal: false,
+      groupName: ""
+    })
   }
 
   toggleGroupModal = (event) => {
@@ -246,9 +244,21 @@ class TeamPage extends React.Component {
   addMember = e => {
     e.preventDefault();
     // console.log("add member button clicked")
-    fc.service('teams').patch(this.props.activeTeamId, { $push: { invitedEmails: this.state.userEmail } });
-    this.setState({ userModal: false });
-  }
+    fc.service("users").find({query: {email: this.state.userEmail}})
+      .then(user => {
+        if(user.data[0] && user.data[0].email === this.state.userEmail){
+          console.log("user was found");
+          fc.service("users").patch(user.data[0]._id, {$push: {teamIds: this.props.activeTeamId}})
+            .then(user => {
+              this.getData(this.props.activeTeamId, this.props.activeUser);
+            });
+        } else {
+          console.log("user was not found");
+          fc.service('teams').patch(this.props.activeTeamId, { $push: { invitedEmails: this.state.userEmail } });
+        }
+      });
+    this.setState({userModal: false});
+  };
 
   emailChange = (event) => {
     this.setState({ userEmail: event.target.value });
@@ -270,29 +280,31 @@ class TeamPage extends React.Component {
 
   render() {
     return (
-      <div className="row" id="team-page" >
-        <div className="col-4 flex-column justify-content-center pt-5 pr-0 border-right">
-          <TeamHeader teamName={this.state.teamName} activeUser={this.props.activeUser} teamChange={this.props.teamChange} />
-          <GroupHeader addGroup={this.addGroup} value={this.state.groupName} modalStatus={this.state.groupModal} groupNameHandler={this.groupNameChange} toggleModal={this.toggleGroupModal} {...this.props} />
-          {this.state.groupConvos.length > 0 ? (
-            this.state.groupConvos.map(convo => <TeamListItem key={convo._id} activeUserId={this.props.activeUser._id}  openConversation={this.openConversation} status={convo.status} {...convo} />
-            )
-          ) : (<h6 className='listItem'>No Group Conversations Exist</h6>)
-          }
-          <MemberHeader addMember={this.addMember} modalStatus={this.state.userModal} emailChange={this.emailChange} value={this.state.userEmail} {...this.props} toggleModal={this.toggleEmail} />
-          {this.state.memberConvos.length > 0 ? (
-            this.state.memberConvos.map(convo => (
-              <TeamListItem key={convo._id}  activeUserId={this.props.activeUser._id}  openConversation={this.openConversation} status={convo.status} {...convo} />
-            ))
-          ) : (
-              <h3 className='listItem'>No Member Conversations Exist</h3>
+      <div className="row" id="team-page">
+        <div className="col-4 flex-column justify-content-center border-right convoView">
+        <TeamHeader teamName={this.state.teamName} activeUser={this.props.activeUser} teamChange={this.props.teamChange}/>
+            <div>
+            <GroupHeader addGroup={this.addGroup} value={this.state.groupName} modalStatus={this.state.groupModal} groupNameHandler={this.groupNameChange} toggleModal={this.toggleGroupModal} {...this.props} />
+            {this.state.groupConvos.length > 0 ? (
+                this.state.groupConvos.map(convo => <TeamListItem key={convo._id} activeConvoId={this.state.activeConvoId} activeUserId={this.props.activeUser._id} openConversation={this.openConversation} {...convo} />
+                )
+              ) : ( <h6 className='listItem'>{null}</h6>)
+            }
+            <MemberHeader addMember={this.addMember} modalStatus={this.state.userModal} emailChange={this.emailChange} value={this.state.userEmail} {...this.props} toggleModal={this.toggleEmail} />
+            {this.state.memberConvos.length > 0 ? (
+              this.state.memberConvos.map(convo => (
+                <TeamListItem key={convo._id} activeConvoId={this.state.activeConvoId} activeUserId={this.props.activeUser._id} openConversation={this.openConversation} {...convo} />
+              ))
+            ) : (
+              <h3 className='listItem'>{null}</h3>
             )}
-          <CustomerHeader addMember={this.addMember} {...this.props} />
+          <CustomerHeader addSMS={this.addSMS} {...this.props} />
           {this.state.customerConvos.length > 0 ? (
-            this.state.customerConvos.map(convo => <TeamListItem key={convo._id} activeUserId={this.props.activeUser._id} openConversation={this.openConversation} status={convo.status} {...convo} />
+            this.state.customerConvos.map(convo => <TeamListItem key={convo._id} activeConvoId={this.state.activeConvoId}  activeUserId={this.props.activeUser._id} openConversation={this.openConversation} status={convo.status} {...convo} />
             )
-          ) : (<h6 className="listItem">No Customer Conversations Exist</h6>)
+          ) : (<h6 className="listItem">{null}</h6>)
           }
+            </div>
         </div>
         <ConversationView getMessages={this.updateMessagesForActiveConversation} messages={this.state.messages} activeUser={this.props.activeUser} conversationId={this.state.activeConvoId} conversation={this.state.activeConversation} />
       </div>

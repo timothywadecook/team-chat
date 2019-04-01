@@ -1,6 +1,7 @@
 
 
-//const processIncomingSms = require('../../hooks/process-incoming-sms');
+// const processIncomingSms = require('../../hooks/process-incoming-sms');
+
 
 module.exports = {
   before: {
@@ -8,7 +9,7 @@ module.exports = {
     find: [],
     get: [],
     create: [
-      //processIncomingSms()
+      // processIncomingSms()
     ],
     update: [],
     patch: [],

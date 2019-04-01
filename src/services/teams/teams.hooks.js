@@ -1,11 +1,21 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
+const hooks = require('feathers-authentication-hooks');
+
+const setActiveTeamOnUser = require('../../hooks/set-active-team-on-user');
+const associateTeamToOwner = require('../../hooks/associate-team-to-owner');
+const addTeamOwnerIdToTeam = require('../../hooks/add-team-owner-id-to-team');
+
+const initializeConversationForTeamCreation = require('../../hooks/initialize-conversation-for-team-creation');
 
 module.exports = {
   before: {
     all: [ authenticate('jwt') ],
     find: [],
     get: [],
-    create: [],
+    create: [
+      hooks.associateCurrentUser({ as: 'ownerId' }), // as 'user'??
+      addTeamOwnerIdToTeam(),
+    ],
     update: [],
     patch: [],
     remove: []
@@ -15,7 +25,11 @@ module.exports = {
     all: [],
     find: [],
     get: [],
-    create: [],
+    create: [
+      setActiveTeamOnUser(),
+      associateTeamToOwner(),
+      initializeConversationForTeamCreation()
+    ],
     update: [],
     patch: [],
     remove: []
