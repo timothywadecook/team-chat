@@ -1,4 +1,6 @@
 {
-  "host": "team-chat-app.feathersjs.com",
-  "port": "PORT"
+  "host": "https://teamchat-tepa.herokuapp.com",
+  "port": "PORT",
+  "mongodb": "mongodb://heroku_lbdjks25:orsnv158md3m99iubdjns0b0tq@ds125896.mlab.com:25896/heroku_lbdjks25",
+  "frontend": "../client/build"
 }
