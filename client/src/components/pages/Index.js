@@ -1,15 +1,21 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
+import { Jumbotron } from "reactstrap";
+import logo from "./teamchatIcon.png";
 
 function Index() {
   return (
-    <div>
-      <h2>Index</h2>
-      <Link to="/login">Login</Link>
-      <br />
-      <Link to="/register">Register</Link>
-    </div>
-  )
+    <Jumbotron className="landingPageDiv">
+        <h2 className="landingPageHeader">Team Chat</h2>
+        <img src={ logo } alt="Logo Placeholder" className="logoImage"/>
+        <Link to="/login" className="authLink">
+          Login
+        </Link>
+        <Link to="/register" className="authLink">
+          Register
+        </Link>
+    </Jumbotron>
+  );
 }
 
 export default Index;

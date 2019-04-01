@@ -4,6 +4,41 @@ body {
   font-family: "Roboto", sans-serif;
 }
 
+.landingPageDiv{
+  background-color: whitesmoke;
+  padding: 50px;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 10px;
+  margin: 10px auto;
+  margin-top: 50px;
+  box-shadow: 5px 5px 20px #888;
+}
+
+.landingPageHeader{
+  font-size: 40px;
+}
+
+.logoImage{
+  margin: 10px;
+  width: 180px;
+  height: 180px;
+}
+
+.authLink{
+  color: #41546d;
+  opacity: .82;
+  margin: 10px;
+  font-size: 20px;
+}
+
+.authLink:hover{
+  text-decoration: none;
+  color: #b06675;
+}
+
 #team-page {
   height: 100vh; //make the teampage take up the entire height
 }
@@ -566,3 +601,18 @@ h6 {
     font-size: 20px;
   }
 }
+
+// @media only screen and (max-width: 600px){
+//   .col-4{
+//     display: none;
+//   }
+
+//   .col-4:hover{
+//     display: block;
+//   }
+
+//   .col-8{
+//     max-width: 100vw;
+//     flex: none;
+//   }
+// }
