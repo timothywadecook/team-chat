@@ -18,17 +18,14 @@ module.exports = function(app) {
       console.log('is the new conversation in this list?', conversations)
       conversations.forEach(convo => {
         app.channel(`conversation-${convo._id}`).join(connection);
-        console.log('connection established for conversation-', convo._id)
       });
     })
     .catch(err => {
-      console.log('error getting channels ', err);
     });
     
     // FOR EACH TEAM: add user to team channel
     user.teamIds.forEach(teamId => {
       app.channel(`team-${teamId}`).join(connection);
-      console.log('TEAM CONNECTION MADE', teamId)
     });
 
     // Add it to the authenticated user channel
@@ -40,7 +37,6 @@ module.exports = function(app) {
     app.channel(app.channels).leave(connection =>
       connection.user._id === userId
     );
-    console.log('leaving all channels for', userId)
   };
 
   app.on('login', (authResult, { connection }) => {
@@ -52,16 +48,13 @@ module.exports = function(app) {
 
   // Leave and re-join all channels with new user information
   const updateChannels = async conversation => {
-    console.log('channels updating for new convo ........', conversation)
     const {connections} =  await app.channel(app.channels);
-    console.log('connections length = ', connections.length)
     // Find all connections for this user
     for (let i=0; i<conversation.userIds.length; i++) {
       for (let j=0; j<connections.length; j++) {
         const user = connections[j].user;
         const userId = conversation.userIds[i];
         if (userId.toString() === user._id.toString()) {
-          console.log(user)
           await leaveChannels(user._id);
           await joinChannels(user, connections[j])
         }

@@ -1,10 +1,10 @@
 {
   "host": "localhost",
-  "port": 8080,
-  "public": "../public/",
+  "port": 3030,
+  "public": "../client/build/",
   "paginate": {
-    "default": 10,
-    "max": 50
+    "default": 100,
+    "max": 100
   },
   "authentication": {
     "secret": "0788963dc3e02501de0f148946ca590a91ca4f028c042c81de2ade971008f0032f13393192c04a1b2d07d6aae538a62fc0525912bc24ba84d2ccc5eb3f7a394f5524f30185e389eb55908583a2c765eacdde3c322739a7bf8e61af236e730d061352a2da86273895bddb11731facb9b56b8513d913553342a277accb9403f8a56ee9a820773e8569c7783267166e71edebd68612e85bab7d2e2dcf98c5cf1034f98cae2f09ac9a0d34c06490053d25b36fe1d444713b2d98bb9aaa0b8c3b011abc250b8efb4b2674f3903424cad552ef6bcb1f9e82f587c0b50dbc8210da936ef8991be1a164db46fd9ad855e4628ba275190b5c858d93ae1de9574a5b47ed2d",
@@ -18,7 +18,7 @@
       "header": {
         "typ": "access"
       },
-      "audience": "https://teamchat-tepa.herokuapp.com",
+      "audience": "https://frontdor.herokuapp.com/",
       "subject": "anonymous",
       "issuer": "feathers",
       "algorithm": "HS256",
@@ -30,5 +30,5 @@
       "passwordField": "password"
     }
   },
-  "mongodb": ""
+  "mongodb": "mongodb://localhost:27017/team_chat"
 }

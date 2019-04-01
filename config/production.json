@@ -1,6 +1,5 @@
 {
-  "host": "https://teamchat-tepa.herokuapp.com",
+  "host": "https://frontdor.herokuapp.com",
   "port": "PORT",
-  "mongodb": "mongodb://heroku_lbdjks25:orsnv158md3m99iubdjns0b0tq@ds125896.mlab.com:25896/heroku_lbdjks25",
-  "frontend": "../client/build"
+  "mongodb": "mongodb://heroku_w47q6xwd:ru3q3q64k69eni6qh3iffskrtd@ds111535.mlab.com:11535/heroku_w47q6xwd"
 }
