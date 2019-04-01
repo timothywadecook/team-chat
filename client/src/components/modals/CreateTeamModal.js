@@ -24,7 +24,6 @@ class CreateTeamModal extends React.Component {
         name: this.state.teamName,
     })
     .then((response) => {
-      console.log('CreateTeamModal ran create team',response);
         this.setState({teamName: ""});
         this.props.toggle();
     })

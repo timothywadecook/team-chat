@@ -15,7 +15,6 @@ module.exports = function(app) {
     app.service('conversations')
     .find({query: {userIds: user._id}})
     .then(({ data: conversations }) => {
-      console.log('is the new conversation in this list?', conversations)
       conversations.forEach(convo => {
         app.channel(`conversation-${convo._id}`).join(connection);
       });

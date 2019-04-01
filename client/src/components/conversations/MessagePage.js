@@ -14,7 +14,6 @@ class MessagePage extends React.Component {
 
   clickHandler = event => {
     event.preventDefault();
-    console.log('this should be only once. in MessagePage')
     fc.service("messages")
       .create({
         body: this.state.messageInput,
@@ -23,7 +22,6 @@ class MessagePage extends React.Component {
         conversationId: this.props.conversationId
       })
       .then((data) => {
-        console.log('message created', data)
         this.setState({ messageInput: "" });
       });
   };
