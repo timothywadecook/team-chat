@@ -45,10 +45,10 @@ class CreateTeamModal extends React.Component {
             </InputGroup>
           </ModalBody>
           <ModalFooter>
-            <Button color="primary" onClick={this.createTeam}>
+            <Button color="secondary" onClick={this.createTeam}>
                 Create Team
             </Button>
-            <Button color="secondary" onClick={this.props.toggle}>
+            <Button color="cancelBtn" onClick={this.props.toggle}>
               Cancel
             </Button>
           </ModalFooter>

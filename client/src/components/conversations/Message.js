@@ -1,7 +1,9 @@
 import React from "react";
 import { PromiseProvider } from "mongoose";
 
-
+// 
+// NOTE: this message component is designed to work for both
+// Team messages AND Customer/incoming messages...hence the nested ternary 
 
 const Message = props => (
   props.convoType === "incoming" ? ( // if customer conversation....

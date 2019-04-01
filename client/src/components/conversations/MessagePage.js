@@ -23,6 +23,7 @@ class MessagePage extends React.Component {
         conversationId: this.props.conversationId
       })
       .then((data) => {
+        console.log('message created', data)
         this.setState({ messageInput: "" });
       });
   };

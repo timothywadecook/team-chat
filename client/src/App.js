@@ -32,11 +32,11 @@ class App extends Component {
         const invitation = await fc.service('teams').find({ query: { invitedEmails: user.email } }); // only works for 1 invitation at a time right now
         if (invitation.data.length === 1) {
           const invitingTeamId = invitation.data[0]._id;
-          const activeTeamId = invitingTeamId;
-          user = await fc
-            .service('users')
-            .patch(user, { teamIds: invitingTeamId, activeTeamId: activeTeamId });
-        }
+          user = await fc.service('users').patch(user, {$push: { teamIds: invitingTeamId}});
+          user = await fc.service('users').patch(user, {activeTeamId: invitingTeamId} );
+          const deleteEmailInvite = await fc.service('teams').patch(invitingTeamId, {$pull: {invitedEmails: user.email}});
+        } else if (invitation.data.length > 1) {console.log('more than one invitation, check App.js to add this functionality')}
+
 
         this.setState({
           token: token,

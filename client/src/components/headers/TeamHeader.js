@@ -33,7 +33,7 @@ class TeamHeader extends React.Component {
       });
   }
 
-  async getTeams(){
+  async getTeams(){ // CONSIDER REFACTOR TO ARROW FUNCTION 
     const teamNames = [];
     for(let i = 0; i < this.props.activeUser.teamIds.length; i++){
       await fc.service("users").find({query: {_id: this.props.activeUser._id}})

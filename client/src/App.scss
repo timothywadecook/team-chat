@@ -1,3 +1,4 @@
+
 @import "~bootstrap/scss/bootstrap";
 
 body {
@@ -12,10 +13,6 @@ body {
   height: 100vh; //make the teampage take up the entire height
   max-height: 100vh;
   overflow-y: scroll;
-}
-
-.firstCreateTeamInput {
-  width: 100%;
 }
 
 // 
@@ -34,6 +31,51 @@ body {
   color: transparent;
 }
 
+// 
+
+.landingPageDiv{
+  background-color: whitesmoke;
+  padding: 50px;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 10px;
+  margin: 10px auto;
+  margin-top: 50px;
+  box-shadow: 5px 5px 20px #888;
+}
+
+.landingPageHeader{
+  font-size: 40px;
+  color: #41546d;
+}
+
+.logoImage{
+  margin: 10px;
+  width: 200px;
+  height: 200px;
+}
+
+.authLink{
+  color: #41546d;
+  opacity: .82;
+  margin: 10px;
+  font-size: 20px;
+}
+
+.authLink:hover{
+  text-decoration: none;
+  color: #b06675;
+}
+
+
+// 
+
+
+.firstCreateTeamInput {
+  width: 100%;
+}
 
 .teamCreateBtn,
 .btn-secondary {
@@ -59,10 +101,24 @@ body {
 }
 
 .teamDropDown {
-  padding-top: 10px;
+  padding-top: 15px;
   height: 70px;
   width: 100%;
   background: #fff;
+}
+
+.dropdown-item {
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dropdown-toggle{
+  max-width: 95px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 h6 {
@@ -75,6 +131,26 @@ h6 {
   margin: 5px;
   background-color: #f8f8f8;
   border-radius: 10px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.activeConvo{
+  background-color: #17ffb3;
+}
+
+.listName,
+.navbar-brand {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.previewText {
+  font-size: 12px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .convoView {
@@ -93,7 +169,7 @@ h6 {
 }
 
 .sendInput {
-  width: 90%;
+  width: 90% !important;
   float: left;
   border-radius: 20px;
 }
@@ -232,7 +308,7 @@ h6 {
 
 .message-sender {
   font-size: 15px;
-  color: rgba(0, 0, 0, 0.33);
+  color: rgba(0, 0, 0, 0.5);
 }
 
 .senderName {
@@ -492,5 +568,60 @@ h6 {
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
     opacity: 1;
+  }
+}
+
+.fade-in {
+	-webkit-animation: fade-in 1s ease-in-out both;
+	        animation: fade-in 1s ease-in-out both;
+}
+
+ @-webkit-keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@media only screen and (max-width: 1150px) {
+  .sendInput {
+    width: 80% !important;
+    float: left;
+    border-radius: 20px;
+  }
+
+  .messageBubble {
+    margin: 10px;
+    width: 60%;
+    border-radius: 20px;
+  }
+
+  .listName {
+    font-size: 18px;
+  }
+
+  .previewText {
+    font-size: 12px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  h6 {
+    font-size: 20px;
+  }
+
+  .navbar-brand {
+    font-size: 20px;
   }
 }

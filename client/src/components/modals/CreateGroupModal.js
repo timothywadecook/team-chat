@@ -27,10 +27,10 @@ const CreateGroupModal = props => (
         </InputGroup>
       </ModalBody>
       <ModalFooter>
-        <Button color="primary" onClick={props.addGroup}>
+        <Button color="secondary" onClick={props.addGroup}>
           Create Group
         </Button>
-        <Button color="secondary" onClick={props.toggle}>
+        <Button color="cancelBtn" onClick={props.toggle}>
           Cancel
         </Button>
       </ModalFooter>
