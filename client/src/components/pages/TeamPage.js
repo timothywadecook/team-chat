@@ -305,7 +305,7 @@ class TeamPage extends React.Component {
             )}
           <CustomerHeader teamSMS={this.state.teamSMS} activeTeamId={this.props.activeTeamId}  modalState={this.state.connectSMSModal} toggle={this.toggleConnectSMSModal} {...this.props} />
           {this.state.customerConvos.length > 0 ? (
-            this.state.customerConvos.map(convo => <TeamListItem key={convo._id} activeConvoId={this.state.activeConvoId}  activeUserId={this.props.activeUser._id} openConversation={this.openConversation} status={convo.status} {...convo} />
+            this.state.customerConvos.map(convo => <TeamListItem key={convo._id} activeConvoId={this.state.activeConvoId}  activeUserId={this.props.activeUser._id} openConversation={this.openConversation} {...convo} />
             )
           ) : (<h6 className="listItem">{null}</h6>)
           }
