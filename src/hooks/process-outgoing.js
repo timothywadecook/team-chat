@@ -8,6 +8,7 @@ module.exports = function (options = {}) {
   return async context => {
     // check that message is outbound (not incoming): if senderId is undefined then it is incoming
     // if message was not sent by a user, then do nothing else
+    console.log('sender id? ',context.data.senderId)
     if (!context.data.senderId) {return context}
 
     const {senderName, conversationId, body} = context.data; // get the message data we need to send outgoing 
