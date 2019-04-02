@@ -22,7 +22,7 @@ class ConversationView extends React.Component {
       <Nav className="navbar bg-light d-flex justify-content-center sticky-top">
         <span className="navbar-brand" href="#">{"Welcome, " + this.props.activeUser.name}</span>
       </Nav>
-      <MessagePage convoType={conversation.type} {...this.props}/>
+      <MessagePage {...this.props}/>
       </div>);
   }
 }
