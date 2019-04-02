@@ -21,7 +21,7 @@ class MessageBoard extends React.Component{
     return (
       <div className="conversation-body">
           {this.props.messages &&
-            this.props.messages.map(message => <Message key={message._id} name={message.senderName} body={message.body} activeUser={this.props.activeUser} id={message.senderId}/>)}
+            this.props.messages.map(message => <Message key={message._id} convoType={this.props.convoType} name={message.senderName} body={message.body} activeUser={this.props.activeUser} id={message.senderId}/>)}
             <div style={{ float:"left", clear: "both" }}
              ref={(el) => { this.messagesEnd = el; }}>
             </div>
