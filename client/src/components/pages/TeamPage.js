@@ -160,7 +160,7 @@ class TeamPage extends React.Component {
       teamSMS: team.smsNumber || "",
       groupConvos: groupConvos,
       memberConvos: memberConvos,
-      customerConvos: customerConvos.data || []
+      customerConvos: customerConvos || []
     });
   } // done
   updateStateForNewMessage = async (message) => {

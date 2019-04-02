@@ -20,7 +20,7 @@ module.exports = function (options = {}) {
       const team = await context.app.service('teams').get(convo.teamId);
       const teamSms = team.smsNumber;
       const {activeOutgoing} = convo;
-      console.log(' teamSMS and target number: ', teamSMS, activeOutgoing)
+      console.log(' teamSMS and target number: ', teamSms, activeOutgoing)
 
       client.messages
       .create({
