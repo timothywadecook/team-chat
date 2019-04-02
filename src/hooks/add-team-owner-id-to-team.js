@@ -5,7 +5,6 @@
 module.exports = function (options = {}) {
   return async context => {
     const user = context.params.user;
-    console.log('is user what he thinks it is is this user?', user)
 
     context.data.memberIds = [user._id];
 

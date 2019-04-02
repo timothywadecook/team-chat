@@ -7,7 +7,6 @@ module.exports = function (options = {}) {
 
 // When a message is sent or received, update the conversation status for everyone. 
     const message = context.data;
-    console.log('this should be the message via update-convo-statuses..hook', message)
 
       
 // get all userIds for the conversation

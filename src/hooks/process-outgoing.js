@@ -8,7 +8,6 @@ module.exports = function (options = {}) {
   return async context => {
     // check that message is outbound (not incoming): if senderId is undefined then it is incoming
     // if message was not sent by a user, then do nothing else
-    console.log('sender id? ',context.data.senderId)
     if (!context.data.senderId) {return context}
 
     const {senderName, conversationId, body} = context.data; // get the message data we need to send outgoing 
@@ -16,12 +15,11 @@ module.exports = function (options = {}) {
     const convo = await context.app.service('conversations').get(conversationId);
 
     if (convo.type === "incoming") {
-      console.log('incoming message identified')
       // get the team number for "from"
       const team = await context.app.service('teams').get(convo.teamId);
       const teamSms = team.smsNumber;
       const {activeOutgoing} = convo;
-      console.log(' teamSMS and target number: ', teamSms, activeOutgoing)
+      console.log(' from: and to: number: ', teamSms, activeOutgoing)
 
       client.messages
       .create({

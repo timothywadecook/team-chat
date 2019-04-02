@@ -33,22 +33,18 @@ class TeamPage extends React.Component {
     const userId = this.props.activeUser._id;
     // update db 
     let statusPath = `status.${userId}`;
-    console.log('status path check should be status.sdlfawoiecwpo', statusPath)
-    console.log('activeConvo status',this.state.activeConversation.status)
     if (this.state.activeConversation.status[userId] === "unread") {
       const updatedConvo = await fc.service('conversations').patch(this.state.activeConvoId, { [statusPath] : "unreplied"})
       // update state with new convos from db 
-      console.log('updatedconvo status', updatedConvo.status)
       const type = updatedConvo.type;
       if (type==="member") {const memberConvos = await this.getMemberConvos(teamId, this.props.activeUser); await this.setState({memberConvos})}
-      else if (type==="group") {const groupConvos = await this.getGroupConvos(teamId, this.props.activeUser); console.log('group conversations', groupConvos); await this.setState({groupConvos})}
+      else if (type==="group") {const groupConvos = await this.getGroupConvos(teamId, this.props.activeUser); await this.setState({groupConvos})}
       else if (type==="incoming") {const customerConvos = await this.getCustomerConvos(teamId, this.props.activeUser); await this.setState({customerConvos})}
     }
   } // done
   getMemberConvos = async (teamId, user) => { 
     let memberConvos = await fc.service('conversations').find({query: {teamId: teamId, userIds: user._id, type: "member"}});
     if (memberConvos.data.length > 0) {memberConvos = await this.removeMyNameFromDisplayedMemberConvoName(memberConvos.data, user);} else {memberConvos = memberConvos.data}
-    console.log('member convos why name not removed? ', memberConvos)
     return memberConvos;
   } // done
   getGroupConvos = async (teamId, user) => { 
@@ -69,7 +65,6 @@ class TeamPage extends React.Component {
   } // done
   removeMyNameFromDisplayedMemberConvoName = (memberConvos,user) => {
     for (let i=1; i<memberConvos.length; i++) {
-      console.log('i should see convo name and my name', memberConvos[i].name, user.name)
       memberConvos[i].name = memberConvos[i].name.replace(user.name, "").trim()
     }
     return memberConvos
@@ -166,7 +161,6 @@ class TeamPage extends React.Component {
   updateStateForNewMessage = async (message) => {
     // pull convos for this message type and update state
     const convo = await fc.service('conversations').get(message.conversationId);
-    console.log('we are listening to new messages and we heard that one, message, convo.type', message, convo.type)
     const convoType = convo.type;
     if (convoType === "member") { const updatedMemberConvos = await this.getMemberConvos(this.props.activeTeamId, this.props.activeUser); this.setState({memberConvos: updatedMemberConvos})}
     else if (convoType === "group") { const updatedGroupConvos = await this.getGroupConvos(this.props.activeTeamId, this.props.activeUser); this.setState({groupConvos: updatedGroupConvos})}
@@ -207,8 +201,11 @@ class TeamPage extends React.Component {
     ) {
       this.getData(this.props.activeTeamId, this.props.activeUser);
     }
+    if (prevProps.activeTeamId !== this.props.activeTeamId) {
+      this.setState({activeConvoId: "", activeConversation: null, messages: []})
+    }
     // if activeConvoId changes then run get messages to update state
-    if (this.state.activeConvoId !== prevState.activeConvoId) {
+    if (this.state.activeConvoId && this.state.activeConvoId !== prevState.activeConvoId) {
       // get the messages for the now active conversation
       this.updateMessagesForActiveConversation();
       // change the status of this active conversation to unreplied if unread
@@ -223,7 +220,6 @@ class TeamPage extends React.Component {
   addGroup = async (e) => {
     e.preventDefault();
     const userIds = this.state.teamMembers.map(member => member._id);
-    console.log('userIds on new group', userIds)
     await fc.service('conversations').create({
         name: this.state.groupName,
         type: 'group',

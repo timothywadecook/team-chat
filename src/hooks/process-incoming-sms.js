@@ -69,8 +69,6 @@ module.exports = function (options = {}) {
       createdAt: new Date().getTime()
     };
 
-    console.log('checkpoint end of process incoming hook', context.data);
-
     return context;
   };
 };
