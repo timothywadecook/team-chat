@@ -72,6 +72,11 @@ body {
 
 // 
 
+.card-body {
+  padding: 0.85rem !important;
+}
+
+
 
 .firstCreateTeamInput {
   width: 100%;
@@ -308,11 +313,12 @@ h6 {
 
 .message-sender {
   font-size: 15px;
-  color: rgba(0, 0, 0, 0.5);
+  color: rgba(0, 0, 0, 0.33);
 }
 
 .senderName {
   float: right;
+  margin: 0;
 }
 
 ::-webkit-scrollbar {

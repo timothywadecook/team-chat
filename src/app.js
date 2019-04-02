@@ -49,9 +49,9 @@ app.configure(services);
 app.configure(channels);
 
 // catch all route to handle refresh on deployed heroku version
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname+'../client/build/index.html'));
-});
+// app.get('*', (req, res) => {
+//     res.sendFile(path.join(__dirname+'../client/build/index.html'));
+// });
 
 // Configure a middleware for 404s and the error handler
 app.use(express.notFound());

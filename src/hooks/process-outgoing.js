@@ -15,10 +15,12 @@ module.exports = function (options = {}) {
     const convo = await context.app.service('conversations').get(conversationId);
 
     if (convo.type === "incoming") {
+      console.log('incoming message identified')
       // get the team number for "from"
       const team = await context.app.service('teams').get(convo.teamId);
       const teamSms = team.smsNumber;
       const {activeOutgoing} = convo;
+      console.log(' teamSMS and target number: ', teamSMS, activeOutgoing)
 
       client.messages
       .create({
