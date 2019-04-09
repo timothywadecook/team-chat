@@ -175,7 +175,7 @@ class TeamPage extends React.Component {
     const convoType = convo.type;
     if (convoType === "member") { const updatedMemberConvos = await this.getMemberConvos(this.props.activeTeamId, this.props.activeUser); this.setState({memberConvos: updatedMemberConvos})}
     else if (convoType === "group") { const updatedGroupConvos = await this.getGroupConvos(this.props.activeTeamId, this.props.activeUser); this.setState({groupConvos: updatedGroupConvos})}
-    else if ( convoType === "incoming") { const updatedCustomerConvos = await this.getCustomerConvos(this.props.activeTeamId, this.props.activeUser); updatedCustomerConvos = await this.initializeCustomerConvoStatus_IfNeeded(updatedCustomerConvos, user); this.setState({customerConvos: updatedCustomerConvos})}
+    else if ( convoType === "incoming") { let updatedCustomerConvos = await this.getCustomerConvos(this.props.activeTeamId, this.props.activeUser); updatedCustomerConvos = await this.initializeCustomerConvoStatus_IfNeeded(updatedCustomerConvos, user); this.setState({customerConvos: updatedCustomerConvos})}
   } // done
 
   updateMessagesForActiveConversation = async () => {
